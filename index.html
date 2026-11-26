@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GR Capture — عرض شاشة الهاتف على الكمبيوتر بسلاسة</title>
+  <meta name="description" content="تحميل برنامج GR Capture مجاناً لعرض شاشة هاتف الأندرويد على الكمبيوتر مع الصوت وبدون تأخير." />
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #131a2a;
+      --border: #1f293d;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --accent: #22c55e;
+      --accent-hover: #16a34a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.7; }
+    .container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0 32px; border-bottom: 1px solid var(--border); }
+    .logo { font-size: 1.3rem; font-weight: 800; color: var(--accent); letter-spacing: 0.5px; }
+    nav a { color: var(--muted); text-decoration: none; margin-right: 18px; font-size: 0.95rem; }
+    nav a:hover { color: var(--text); }
+
+    .hero { text-align: center; padding: 56px 16px 40px; }
+    .badge { display: inline-block; background: rgba(34, 197, 94, 0.12); color: var(--accent); padding: 4px 14px; border-radius: 999px; font-size: 0.85rem; margin-bottom: 16px; border: 1px solid rgba(34, 197, 94, 0.3); }
+    h1 { font-size: 2.3rem; margin-bottom: 16px; line-height: 1.3; }
+    .hero p { color: var(--muted); max-width: 640px; margin: 0 auto 28px; font-size: 1.05rem; }
+    .btn-download {
+      display: inline-block; background: var(--accent); color: #052e16; font-weight: 800;
+      padding: 15px 34px; border-radius: 12px; text-decoration: none; font-size: 1.1rem;
+      transition: 0.2s; box-shadow: 0 8px 24px rgba(34, 197, 94, 0.25);
+    }
+    .btn-download:hover { background: var(--accent-hover); transform: translateY(-2px); }
+    .meta-info { margin-top: 12px; font-size: 0.85rem; color: var(--muted); }
+
+    /* مساحة إعلانية نظيفة وغير مزعجة */
+    .ad-slot {
+      margin: 36px auto; padding: 18px; background: #0f1524; border: 1px dashed #2a3650;
+      border-radius: 12px; text-align: center; color: var(--muted); font-size: 0.85rem;
+      min-height: 100px; display: flex; align-items: center; justify-content: center;
+    }
+
+    .section { margin: 48px 0; }
+    .section h2 { font-size: 1.5rem; margin-bottom: 20px; border-right: 4px solid var(--accent); padding-right: 12px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+    .card { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 14px; }
+    .card h3 { margin-bottom: 8px; font-size: 1.1rem; color: #fff; }
+    .card p { color: var(--muted); font-size: 0.95rem; }
+
+    .steps { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+    .steps ol { padding-right: 20px; color: var(--muted); }
+    .steps li { margin-bottom: 10px; }
+    .steps strong { color: var(--text); }
+
+    .legal-box { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-top: 16px; color: var(--muted); font-size: 0.92rem; }
+    footer { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 0.9rem; }
+    footer a { color: var(--accent); text-decoration: none; margin: 0 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">GR Capture</div>
+      <nav>
+        <a href="#features">المميزات</a>
+        <a href="#guide">طريقة التشغيل</a>
+        <a href="#privacy">الخصوصية</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <span class="badge">الإصدار v1.0 • مجاني بالكامل لويندوز</span>
+      <h1>اعرض شاشة هاتفك على الكمبيوتر بأعلى سلاسة وصوت واضح</h1>
+      <p>برنامج <strong>GR Capture</strong> أداة خفيفة ومباشرة لبث شاشة هاتف الأندرويد والتحكم بها على شاشة الكمبيوتر بدون تقطيع أو تعقيد، مثالي للألعاب، البث المباشر، والتصوير.</p>
+      <a class="btn-download" href="https://github.com/brnamj-glitch/GR-Capture/releases/download/v1.0/GR.Capture.exe">
+        تحميل GR Capture v1.0 (46.4 MB)
+      </a>
+      <div class="meta-info">نظام التشغيل: Windows 10 / 11 (64-bit) • ملف تشغيل مباشر (.exe)</div>
+    </section>
+
+    <!-- مكان الإعلان الأول (أسفل زر التحميل بمسافة مريحة) -->
+    <div class="ad-slot" id="ad-top">
+      مساحة إعلانية مخصصة (ضع كود إعلان Google AdSense هنا لاحقاً)
+    </div>
+
+    <section class="section" id="features">
+      <h2>لماذا تستخدم GR Capture؟</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>⚡ استجابة فورية بدون تأخير</h3>
+          <p>مصمم لتقديم أقل زمن استجابة ممكن (Low Latency) لتجربة لعب وتحكم سلسة عبر كابل USB أو الشبكة.</p>
+        </div>
+        <div class="card">
+          <h3>🔊 دعم نقل الصوت</h3>
+          <p>انقل صوت الهاتف مباشرة إلى سماعات الكمبيوتر أو برامج البث والتسجيل بكل سهولة.</p>
+        </div>
+        <div class="card">
+          <h3>🪶 خفيف ولا يحتاج تثبيت</h3>
+          <p>ملف تشغيل واحد جاهز للعمل فوراً دون استهلاك موارد المعالج أو كرت الشاشة.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="guide">
+      <h2>طريقة التشغيل في 3 خطوات</h2>
+      <div class="steps">
+        <ol>
+          <li><strong>تفعيل تصحيح أخطاء USB:</strong> من إعدادات هاتفك ادخل إلى <em>خيارات المطور (Developer Options)</em> وفعّل خيار <em>USB Debugging</em>.</li>
+          <li><strong>توصيل الهاتف:</strong> وصّل الهاتف بالكمبيوتر عبر كابل USB ووافق على رسالة السماح على شاشة الهاتف.</li>
+          <li><strong>تشغيل البرنامج:</strong> افتح ملف <code>GR.Capture.exe</code> وستظهر شاشة هاتفك فوراً على الكمبيوتر.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- مكان الإعلان الثاني (في أسفل المحتوى قبل التذييل) -->
+    <div class="ad-slot" id="ad-bottom">
+      مساحة إعلانية ثانية (ضع كود الإعلان الثاني هنا لاحقاً)
+    </div>
+
+    <section class="section" id="privacy">
+      <h2>سياسة الخصوصية وشروط الاستخدام</h2>
+      <div class="legal-box">
+        <p><strong>سياسة الخصوصية:</strong> يحترم موقع GR Capture خصوصية الزوار ولا يجمع أي بيانات شخصية حساسة. قد نستخدم ملفات تعريف الارتباط (Cookies) لتحسين تجربة التصفح وعرض إعلانات ملائمة عبر مزودي الإعلانات المعتمدين مثل Google AdSense.</p>
+        <p style="margin-top:10px;"><strong>إخلاء المسؤولية:</strong> البرنامج متاح للاستخدام الشخصي والتعليمي. جميع الحقوق محفوظة لمطور GR Capture.</p>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2026 GR Capture — جميع الحقوق محفوظة</p>
+      <p style="margin-top:6px;">
+        <a href="#privacy">سياسة الخصوصية</a> |
+        <a href="mailto:karamrevuads@gmail.com">تواصل معنا</a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
