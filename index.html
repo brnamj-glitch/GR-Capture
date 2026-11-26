@@ -14,6 +14,8 @@
       --muted: #9ca3af;
       --accent: #22c55e;
       --accent-hover: #16a34a;
+      --warn: #f59e0b;
+      --warn-bg: rgba(245, 158, 11, 0.12);
       --danger: #ef4444;
       --danger-bg: rgba(239, 68, 68, 0.12);
     }
@@ -47,7 +49,7 @@
     .hero p { color: var(--muted); max-width: 660px; margin: 0 auto 26px; font-size: 1.04rem; }
 
     .download-zone {
-      min-height: 110px; display: flex; flex-direction: column;
+      min-height: 120px; display: flex; flex-direction: column;
       align-items: center; justify-content: center; gap: 10px;
     }
 
@@ -56,6 +58,11 @@
       padding: 14px 26px; border-radius: 12px; font-size: 1.05rem; font-weight: 700;
     }
     .timer-num { color: var(--accent); font-size: 1.35rem; margin: 0 4px; }
+
+    .paused-note {
+      background: var(--warn-bg); border: 1px solid rgba(245, 158, 11, 0.45);
+      color: #fde68a; padding: 10px 16px; border-radius: 10px; font-size: 0.9rem; font-weight: 600;
+    }
 
     .btn-download {
       display: inline-block; background: var(--accent); color: #052e16; font-weight: 800;
@@ -81,7 +88,18 @@
     .ad-slot {
       margin: 34px auto; padding: 18px; background: #0f1524; border: 1px dashed #2a3650;
       border-radius: 12px; text-align: center; color: var(--muted); font-size: 0.85rem;
-      min-height: 100px; display: flex; align-items: center; justify-content: center;
+      min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      position: relative;
+    }
+
+    .ad-probe-box {
+      width: 320px;
+      height: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      color: var(--muted);
     }
 
     .section { margin: 44px 0; }
@@ -123,7 +141,7 @@
       <p data-i18n="heroDesc">GR Capture is a lightweight tool to display and control your Android screen on Windows with low delay and audio support—ideal for gaming, streaming, and recording.</p>
 
       <div class="download-zone" id="downloadZone">
-        <!-- رسالة قفل مانع الإعلانات -->
+        <!-- قفل مانع الإعلانات -->
         <div class="adblock-lock hidden" id="adblockBox">
           <strong data-i18n="adblockTitle">Ad Blocker Detected!</strong>
           <span data-i18n="adblockDesc">Please disable your ad blocker for this site to unlock the download button.</span>
@@ -138,7 +156,12 @@
           <span data-i18n="timerSuffix">seconds before download unlocks...</span>
         </div>
 
-        <!-- زر التحميل الفعلي -->
+        <!-- تنبيه إيقاف العداد عند مغادرة التبويب -->
+        <div class="paused-note hidden" id="pausedBox" data-i18n="pausedText">
+          Timer paused because you switched tabs. Stay on this tab to continue counting down.
+        </div>
+
+        <!-- زر التحميل -->
         <a
           class="btn-download hidden"
           id="downloadBtn"
@@ -152,10 +175,11 @@
       </div>
     </section>
 
-    <!-- مكان الإعلان الأول (مطلوب لكشف مانع الإعلانات وعرض الإعلان لاحقاً) -->
+    <!-- مساحة إعلانية 1 + عناصر فحص شائعة -->
     <div class="ad-slot" id="ad-top">
-      <div class="adsbygoogle-bait" style="height:1px; width:1px; position:absolute; left:-9999px;"></div>
-      <span data-i18n="adTopText">Ad Space #1 (Paste your ad banner code here later)</span>
+      <div class="adsbygoogle ad-probe-box" id="google_ads_iframe_1" data-ad-slot="1001">
+        <span data-i18n="adTopText">Ad Space #1 (Paste your ad banner code here later)</span>
+      </div>
     </div>
 
     <section class="section" id="features">
@@ -187,8 +211,11 @@
       </div>
     </section>
 
+    <!-- مساحة إعلانية 2 -->
     <div class="ad-slot" id="ad-bottom">
-      <span data-i18n="adBottomText">Ad Space #2 (Paste your second ad banner code here later)</span>
+      <div class="ads-banner ad-probe-box" id="sponsor-banner-2">
+        <span data-i18n="adBottomText">Ad Space #2 (Paste your second ad banner code here later)</span>
+      </div>
     </div>
 
     <section class="section" id="privacy">
@@ -208,8 +235,12 @@
     </footer>
   </div>
 
-  <!-- ملف وهمي باسم إعلاني لكشف مانع الإعلانات -->
-  <script src="ads.js" onload="window.__adsJsLoaded = true;" onerror="window.__adsJsBlocked = true;"></script>
+  <!-- سكربت محلي باسم إعلاني لكشف الحظر -->
+  <script
+    src="ads.js"
+    onload="window.__grAdsLoaded = true;"
+    onerror="window.__grAdsBlocked = true;"
+  ></script>
 
   <script>
     const translations = {
@@ -229,6 +260,7 @@
         recheckBtn: "I Disabled It — Check Again",
         timerPrefix: "Please wait",
         timerSuffix: "seconds before download unlocks...",
+        pausedText: "Timer paused because you switched tabs. Stay on this tab to continue counting down.",
         downloadBtn: "Download GR Capture v1.0 (46.4 MB)",
         metaInfo: "OS: Windows 10 / 11 (64-bit) • Direct Executable (.exe)",
         adTopText: "Ad Space #1 (Paste your ad banner code here later)",
@@ -266,6 +298,7 @@
         recheckBtn: "أوقفته — افحص مرة أخرى",
         timerPrefix: "يرجى الانتظار",
         timerSuffix: "ثانية قبل فتح زر التحميل...",
+        pausedText: "توقف المؤقت لأنك غادرت التبويب. ابقَ في هذا التبويب ليستمر العد التنازلي.",
         downloadBtn: "تحميل GR Capture v1.0 (46.4 MB)",
         metaInfo: "نظام التشغيل: Windows 10 / 11 (64-bit) • ملف تشغيل مباشر (.exe)",
         adTopText: "مساحة إعلانية 1 (ضع كود الإعلان هنا لاحقاً)",
@@ -296,95 +329,6 @@
 
     const adblockBox = document.getElementById("adblockBox");
     const timerBox = document.getElementById("timerBox");
+    const pausedBox = document.getElementById("pausedBox");
     const countdownEl = document.getElementById("countdown");
-    const downloadBtn = document.getElementById("downloadBtn");
-    const recheckBtn = document.getElementById("recheckBtn");
-    const langToggle = document.getElementById("langToggle");
-
-    function applyLanguage(lang) {
-      currentLang = lang;
-      const dict = translations[lang];
-      document.documentElement.lang = dict.lang;
-      document.documentElement.dir = dict.dir;
-      document.title = dict.pageTitle;
-      langToggle.textContent = dict.switchBtn;
-
-      document.querySelectorAll("[data-i18n]").forEach((el) => {
-        const key = el.getAttribute("data-i18n");
-        if (dict[key] !== undefined) {
-          el.innerHTML = dict[key];
-        }
-      });
-    }
-
-    langToggle.addEventListener("click", () => {
-      applyLanguage(currentLang === "en" ? "ar" : "en");
-    });
-
-    function isAdBlockerActive() {
-      const bait = document.querySelector(".adsbygoogle-bait");
-      const baitHidden = !bait || bait.offsetParent === null || bait.offsetHeight === 0;
-      const scriptBlocked = Boolean(window.__adsJsBlocked) || !Boolean(window.__adsJsLoaded);
-      return baitHidden || scriptBlocked;
-    }
-
-    function startCountdownIfNeeded() {
-      if (timerFinished) {
-        adblockBox.classList.add("hidden");
-        timerBox.classList.add("hidden");
-        downloadBtn.classList.remove("hidden");
-        return;
-      }
-
-      adblockBox.classList.add("hidden");
-      downloadBtn.classList.add("hidden");
-      timerBox.classList.remove("hidden");
-      countdownEl.textContent = timeLeft;
-
-      if (countdownInterval) clearInterval(countdownInterval);
-      countdownInterval = setInterval(() => {
-        if (isAdBlockerActive()) {
-          clearInterval(countdownInterval);
-          countdownInterval = null;
-          evaluateAccess();
-          return;
-        }
-
-        timeLeft -= 1;
-        countdownEl.textContent = Math.max(timeLeft, 0);
-
-        if (timeLeft <= 0) {
-          clearInterval(countdownInterval);
-          countdownInterval = null;
-          timerFinished = true;
-          timerBox.classList.add("hidden");
-          downloadBtn.classList.remove("hidden");
-        }
-      }, 1000);
-    }
-
-    function evaluateAccess() {
-      if (isAdBlockerActive()) {
-        if (countdownInterval) {
-          clearInterval(countdownInterval);
-          countdownInterval = null;
-        }
-        timerBox.classList.add("hidden");
-        downloadBtn.classList.add("hidden");
-        adblockBox.classList.remove("hidden");
-      } else {
-        startCountdownIfNeeded();
-      }
-    }
-
-    recheckBtn.addEventListener("click", () => {
-      location.reload();
-    });
-
-    applyLanguage("en");
-    window.addEventListener("load", () => {
-      setTimeout(evaluateAccess, 250);
-    });
-  </script>
-</body>
-</html>
+    const downloadBtn = document.getElementById

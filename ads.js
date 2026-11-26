@@ -1,1 +1,2 @@
-window.adBlockDetected = false;
+window.__grAdsLoaded = true;
+window.__grAdsBlocked = false;
