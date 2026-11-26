@@ -1,0 +1,1 @@
+window.adBlockDetected = false;

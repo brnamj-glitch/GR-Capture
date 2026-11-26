@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GR Capture — عرض شاشة الهاتف على الكمبيوتر بسلاسة</title>
-  <meta name="description" content="تحميل برنامج GR Capture مجاناً لعرض شاشة هاتف الأندرويد على الكمبيوتر مع الصوت وبدون تأخير." />
+  <title>GR Capture — Smooth Android Screen Mirroring to PC</title>
+  <meta name="description" content="Download GR Capture for Windows to mirror your Android screen to PC with audio and low latency." />
   <style>
     :root {
       --bg: #0b0f19;
@@ -14,126 +14,377 @@
       --muted: #9ca3af;
       --accent: #22c55e;
       --accent-hover: #16a34a;
+      --danger: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.12);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif; }
     body { background: var(--bg); color: var(--text); line-height: 1.7; }
     .container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
-    header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0 32px; border-bottom: 1px solid var(--border); }
-    .logo { font-size: 1.3rem; font-weight: 800; color: var(--accent); letter-spacing: 0.5px; }
-    nav a { color: var(--muted); text-decoration: none; margin-right: 18px; font-size: 0.95rem; }
+
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 0 24px; border-bottom: 1px solid var(--border); gap: 12px; flex-wrap: wrap;
+    }
+    .logo { font-size: 1.35rem; font-weight: 800; color: var(--accent); letter-spacing: 0.5px; }
+    .header-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 0.95rem; margin: 0 8px; }
     nav a:hover { color: var(--text); }
 
-    .hero { text-align: center; padding: 56px 16px 40px; }
-    .badge { display: inline-block; background: rgba(34, 197, 94, 0.12); color: var(--accent); padding: 4px 14px; border-radius: 999px; font-size: 0.85rem; margin-bottom: 16px; border: 1px solid rgba(34, 197, 94, 0.3); }
-    h1 { font-size: 2.3rem; margin-bottom: 16px; line-height: 1.3; }
-    .hero p { color: var(--muted); max-width: 640px; margin: 0 auto 28px; font-size: 1.05rem; }
+    .lang-btn {
+      background: var(--card); color: var(--text); border: 1px solid var(--border);
+      padding: 6px 14px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.88rem;
+      transition: 0.2s;
+    }
+    .lang-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero { text-align: center; padding: 48px 16px 32px; }
+    .badge {
+      display: inline-block; background: rgba(34, 197, 94, 0.12); color: var(--accent);
+      padding: 4px 14px; border-radius: 999px; font-size: 0.85rem; margin-bottom: 14px;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+    h1 { font-size: 2.2rem; margin-bottom: 14px; line-height: 1.3; }
+    .hero p { color: var(--muted); max-width: 660px; margin: 0 auto 26px; font-size: 1.04rem; }
+
+    .download-zone {
+      min-height: 110px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+    }
+
+    .timer-box {
+      background: var(--card); border: 1px solid var(--border); color: var(--text);
+      padding: 14px 26px; border-radius: 12px; font-size: 1.05rem; font-weight: 700;
+    }
+    .timer-num { color: var(--accent); font-size: 1.35rem; margin: 0 4px; }
+
     .btn-download {
       display: inline-block; background: var(--accent); color: #052e16; font-weight: 800;
-      padding: 15px 34px; border-radius: 12px; text-decoration: none; font-size: 1.1rem;
+      padding: 15px 34px; border-radius: 12px; text-decoration: none; font-size: 1.08rem;
       transition: 0.2s; box-shadow: 0 8px 24px rgba(34, 197, 94, 0.25);
     }
     .btn-download:hover { background: var(--accent-hover); transform: translateY(-2px); }
-    .meta-info { margin-top: 12px; font-size: 0.85rem; color: var(--muted); }
 
-    /* مساحة إعلانية نظيفة وغير مزعجة */
+    .adblock-lock {
+      background: var(--danger-bg); border: 1px solid rgba(239, 68, 68, 0.45);
+      color: #fecaca; padding: 16px 20px; border-radius: 12px; max-width: 620px;
+      text-align: center; font-size: 0.95rem;
+    }
+    .adblock-lock strong { color: #fff; display: block; margin-bottom: 4px; font-size: 1rem; }
+    .recheck-btn {
+      margin-top: 10px; background: var(--danger); color: #fff; border: none;
+      padding: 8px 18px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.88rem;
+    }
+    .recheck-btn:hover { opacity: 0.9; }
+
+    .meta-info { margin-top: 8px; font-size: 0.85rem; color: var(--muted); }
+
     .ad-slot {
-      margin: 36px auto; padding: 18px; background: #0f1524; border: 1px dashed #2a3650;
+      margin: 34px auto; padding: 18px; background: #0f1524; border: 1px dashed #2a3650;
       border-radius: 12px; text-align: center; color: var(--muted); font-size: 0.85rem;
       min-height: 100px; display: flex; align-items: center; justify-content: center;
     }
 
-    .section { margin: 48px 0; }
-    .section h2 { font-size: 1.5rem; margin-bottom: 20px; border-right: 4px solid var(--accent); padding-right: 12px; }
+    .section { margin: 44px 0; }
+    .section h2 { font-size: 1.45rem; margin-bottom: 18px; border-inline-start: 4px solid var(--accent); padding-inline-start: 12px; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
     .card { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 14px; }
-    .card h3 { margin-bottom: 8px; font-size: 1.1rem; color: #fff; }
-    .card p { color: var(--muted); font-size: 0.95rem; }
+    .card h3 { margin-bottom: 8px; font-size: 1.08rem; color: #fff; }
+    .card p { color: var(--muted); font-size: 0.94rem; }
 
-    .steps { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
-    .steps ol { padding-right: 20px; color: var(--muted); }
+    .steps { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
+    .steps ol { padding-inline-start: 20px; color: var(--muted); }
     .steps li { margin-bottom: 10px; }
     .steps strong { color: var(--text); }
 
-    .legal-box { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-top: 16px; color: var(--muted); font-size: 0.92rem; }
-    footer { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 0.9rem; }
+    .legal-box { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; color: var(--muted); font-size: 0.92rem; }
+    footer { margin-top: 52px; padding-top: 22px; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 0.9rem; }
     footer a { color: var(--accent); text-decoration: none; margin: 0 8px; }
+
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
       <div class="logo">GR Capture</div>
-      <nav>
-        <a href="#features">المميزات</a>
-        <a href="#guide">طريقة التشغيل</a>
-        <a href="#privacy">الخصوصية</a>
-      </nav>
+      <div class="header-right">
+        <nav>
+          <a href="#features" data-i18n="navFeatures">Features</a>
+          <a href="#guide" data-i18n="navGuide">How to Use</a>
+          <a href="#privacy" data-i18n="navPrivacy">Privacy</a>
+        </nav>
+        <button class="lang-btn" id="langToggle" type="button">العربية</button>
+      </div>
     </header>
 
     <section class="hero">
-      <span class="badge">الإصدار v1.0 • مجاني بالكامل لويندوز</span>
-      <h1>اعرض شاشة هاتفك على الكمبيوتر بأعلى سلاسة وصوت واضح</h1>
-      <p>برنامج <strong>GR Capture</strong> أداة خفيفة ومباشرة لبث شاشة هاتف الأندرويد والتحكم بها على شاشة الكمبيوتر بدون تقطيع أو تعقيد، مثالي للألعاب، البث المباشر، والتصوير.</p>
-      <a class="btn-download" href="https://github.com/brnamj-glitch/GR-Capture/releases/download/v1.0/GR.Capture.exe">
-        تحميل GR Capture v1.0 (46.4 MB)
-      </a>
-      <div class="meta-info">نظام التشغيل: Windows 10 / 11 (64-bit) • ملف تشغيل مباشر (.exe)</div>
+      <span class="badge" data-i18n="badge">Version v1.0 • Free for Windows</span>
+      <h1 data-i18n="heroTitle">Mirror Your Phone Screen to PC With Smoothness and Clear Audio</h1>
+      <p data-i18n="heroDesc">GR Capture is a lightweight tool to display and control your Android screen on Windows with low delay and audio support—ideal for gaming, streaming, and recording.</p>
+
+      <div class="download-zone" id="downloadZone">
+        <!-- رسالة قفل مانع الإعلانات -->
+        <div class="adblock-lock hidden" id="adblockBox">
+          <strong data-i18n="adblockTitle">Ad Blocker Detected!</strong>
+          <span data-i18n="adblockDesc">Please disable your ad blocker for this site to unlock the download button.</span>
+          <br />
+          <button class="recheck-btn" id="recheckBtn" type="button" data-i18n="recheckBtn">I Disabled It — Check Again</button>
+        </div>
+
+        <!-- عداد 30 ثانية -->
+        <div class="timer-box hidden" id="timerBox">
+          <span data-i18n="timerPrefix">Please wait</span>
+          <span class="timer-num" id="countdown">30</span>
+          <span data-i18n="timerSuffix">seconds before download unlocks...</span>
+        </div>
+
+        <!-- زر التحميل الفعلي -->
+        <a
+          class="btn-download hidden"
+          id="downloadBtn"
+          href="https://github.com/brnamj-glitch/GR-Capture/releases/download/v1.0/GR.Capture.exe"
+          data-i18n="downloadBtn"
+        >
+          Download GR Capture v1.0 (46.4 MB)
+        </a>
+
+        <div class="meta-info" data-i18n="metaInfo">OS: Windows 10 / 11 (64-bit) • Direct Executable (.exe)</div>
+      </div>
     </section>
 
-    <!-- مكان الإعلان الأول (أسفل زر التحميل بمسافة مريحة) -->
+    <!-- مكان الإعلان الأول (مطلوب لكشف مانع الإعلانات وعرض الإعلان لاحقاً) -->
     <div class="ad-slot" id="ad-top">
-      مساحة إعلانية مخصصة (ضع كود إعلان Google AdSense هنا لاحقاً)
+      <div class="adsbygoogle-bait" style="height:1px; width:1px; position:absolute; left:-9999px;"></div>
+      <span data-i18n="adTopText">Ad Space #1 (Paste your ad banner code here later)</span>
     </div>
 
     <section class="section" id="features">
-      <h2>لماذا تستخدم GR Capture؟</h2>
+      <h2 data-i18n="featuresTitle">Why Use GR Capture?</h2>
       <div class="grid">
         <div class="card">
-          <h3>⚡ استجابة فورية بدون تأخير</h3>
-          <p>مصمم لتقديم أقل زمن استجابة ممكن (Low Latency) لتجربة لعب وتحكم سلسة عبر كابل USB أو الشبكة.</p>
+          <h3 data-i18n="f1Title">⚡ Low-Latency Response</h3>
+          <p data-i18n="f1Desc">Designed for smooth control and gameplay over USB or network with minimal delay.</p>
         </div>
         <div class="card">
-          <h3>🔊 دعم نقل الصوت</h3>
-          <p>انقل صوت الهاتف مباشرة إلى سماعات الكمبيوتر أو برامج البث والتسجيل بكل سهولة.</p>
+          <h3 data-i18n="f2Title">🔊 Audio Forwarding</h3>
+          <p data-i18n="f2Desc">Route your phone audio directly to PC speakers, recording software, or streams.</p>
         </div>
         <div class="card">
-          <h3>🪶 خفيف ولا يحتاج تثبيت</h3>
-          <p>ملف تشغيل واحد جاهز للعمل فوراً دون استهلاك موارد المعالج أو كرت الشاشة.</p>
+          <h3 data-i18n="f3Title">🪶 Lightweight &amp; Portable</h3>
+          <p data-i18n="f3Desc">Single ready-to-run executable file with no heavy background bloat.</p>
         </div>
       </div>
     </section>
 
     <section class="section" id="guide">
-      <h2>طريقة التشغيل في 3 خطوات</h2>
+      <h2 data-i18n="guideTitle">How to Run in 3 Steps</h2>
       <div class="steps">
         <ol>
-          <li><strong>تفعيل تصحيح أخطاء USB:</strong> من إعدادات هاتفك ادخل إلى <em>خيارات المطور (Developer Options)</em> وفعّل خيار <em>USB Debugging</em>.</li>
-          <li><strong>توصيل الهاتف:</strong> وصّل الهاتف بالكمبيوتر عبر كابل USB ووافق على رسالة السماح على شاشة الهاتف.</li>
-          <li><strong>تشغيل البرنامج:</strong> افتح ملف <code>GR.Capture.exe</code> وستظهر شاشة هاتفك فوراً على الكمبيوتر.</li>
+          <li data-i18n="step1"><strong>Enable USB Debugging:</strong> Open <em>Developer Options</em> in your phone settings and turn on <em>USB Debugging</em>.</li>
+          <li data-i18n="step2"><strong>Connect Your Phone:</strong> Plug your phone into your PC via USB and approve the permission prompt on your phone.</li>
+          <li data-i18n="step3"><strong>Launch the App:</strong> Run <code>GR.Capture.exe</code> and your phone screen will appear on your PC.</li>
         </ol>
       </div>
     </section>
 
-    <!-- مكان الإعلان الثاني (في أسفل المحتوى قبل التذييل) -->
     <div class="ad-slot" id="ad-bottom">
-      مساحة إعلانية ثانية (ضع كود الإعلان الثاني هنا لاحقاً)
+      <span data-i18n="adBottomText">Ad Space #2 (Paste your second ad banner code here later)</span>
     </div>
 
     <section class="section" id="privacy">
-      <h2>سياسة الخصوصية وشروط الاستخدام</h2>
+      <h2 data-i18n="privacyTitle">Privacy Policy &amp; Terms</h2>
       <div class="legal-box">
-        <p><strong>سياسة الخصوصية:</strong> يحترم موقع GR Capture خصوصية الزوار ولا يجمع أي بيانات شخصية حساسة. قد نستخدم ملفات تعريف الارتباط (Cookies) لتحسين تجربة التصفح وعرض إعلانات ملائمة عبر مزودي الإعلانات المعتمدين مثل Google AdSense.</p>
-        <p style="margin-top:10px;"><strong>إخلاء المسؤولية:</strong> البرنامج متاح للاستخدام الشخصي والتعليمي. جميع الحقوق محفوظة لمطور GR Capture.</p>
+        <p data-i18n="privacyText"><strong>Privacy Policy:</strong> GR Capture respects visitor privacy and does not collect sensitive personal data. Cookies and advertising partners may be used to display relevant ads.</p>
+        <p style="margin-top:10px;" data-i18n="termsText"><strong>Disclaimer:</strong> Provided for personal and educational use. All rights reserved to the GR Capture developer.</p>
       </div>
     </section>
 
     <footer>
-      <p>© 2026 GR Capture — جميع الحقوق محفوظة</p>
+      <p data-i18n="footerCopy">© 2026 GR Capture — All rights reserved</p>
       <p style="margin-top:6px;">
-        <a href="#privacy">سياسة الخصوصية</a> |
-        <a href="mailto:karamrevuads@gmail.com">تواصل معنا</a>
+        <a href="#privacy" data-i18n="navPrivacy">Privacy</a> |
+        <a href="mailto:karamrevuads@gmail.com" data-i18n="contactUs">Contact</a>
       </p>
     </footer>
   </div>
+
+  <!-- ملف وهمي باسم إعلاني لكشف مانع الإعلانات -->
+  <script src="ads.js" onload="window.__adsJsLoaded = true;" onerror="window.__adsJsBlocked = true;"></script>
+
+  <script>
+    const translations = {
+      en: {
+        lang: "en",
+        dir: "ltr",
+        pageTitle: "GR Capture — Smooth Android Screen Mirroring to PC",
+        switchBtn: "العربية",
+        navFeatures: "Features",
+        navGuide: "How to Use",
+        navPrivacy: "Privacy",
+        badge: "Version v1.0 • Free for Windows",
+        heroTitle: "Mirror Your Phone Screen to PC With Smoothness and Clear Audio",
+        heroDesc: "GR Capture is a lightweight tool to display and control your Android screen on Windows with low delay and audio support—ideal for gaming, streaming, and recording.",
+        adblockTitle: "Ad Blocker Detected!",
+        adblockDesc: "Please disable your ad blocker for this site to unlock the download button.",
+        recheckBtn: "I Disabled It — Check Again",
+        timerPrefix: "Please wait",
+        timerSuffix: "seconds before download unlocks...",
+        downloadBtn: "Download GR Capture v1.0 (46.4 MB)",
+        metaInfo: "OS: Windows 10 / 11 (64-bit) • Direct Executable (.exe)",
+        adTopText: "Ad Space #1 (Paste your ad banner code here later)",
+        adBottomText: "Ad Space #2 (Paste your second ad banner code here later)",
+        featuresTitle: "Why Use GR Capture?",
+        f1Title: "⚡ Low-Latency Response",
+        f1Desc: "Designed for smooth control and gameplay over USB or network with minimal delay.",
+        f2Title: "🔊 Audio Forwarding",
+        f2Desc: "Route your phone audio directly to PC speakers, recording software, or streams.",
+        f3Title: "🪶 Lightweight & Portable",
+        f3Desc: "Single ready-to-run executable file with no heavy background bloat.",
+        guideTitle: "How to Run in 3 Steps",
+        step1: "<strong>Enable USB Debugging:</strong> Open <em>Developer Options</em> in your phone settings and turn on <em>USB Debugging</em>.",
+        step2: "<strong>Connect Your Phone:</strong> Plug your phone into your PC via USB and approve the permission prompt on your phone.",
+        step3: "<strong>Launch the App:</strong> Run <code>GR.Capture.exe</code> and your phone screen will appear on your PC.",
+        privacyTitle: "Privacy Policy & Terms",
+        privacyText: "<strong>Privacy Policy:</strong> GR Capture respects visitor privacy and does not collect sensitive personal data. Cookies and advertising partners may be used to display relevant ads.",
+        termsText: "<strong>Disclaimer:</strong> Provided for personal and educational use. All rights reserved to the GR Capture developer.",
+        footerCopy: "© 2026 GR Capture — All rights reserved",
+        contactUs: "Contact"
+      },
+      ar: {
+        lang: "ar",
+        dir: "rtl",
+        pageTitle: "GR Capture — عرض شاشة الهاتف على الكمبيوتر بسلاسة",
+        switchBtn: "English",
+        navFeatures: "المميزات",
+        navGuide: "طريقة التشغيل",
+        navPrivacy: "الخصوصية",
+        badge: "الإصدار v1.0 • مجاني بالكامل لويندوز",
+        heroTitle: "اعرض شاشة هاتفك على الكمبيوتر بأعلى سلاسة وصوت واضح",
+        heroDesc: "برنامج GR Capture أداة خفيفة ومباشرة لبث شاشة هاتف الأندرويد والتحكم بها على شاشة الكمبيوتر بدون تقطيع أو تعقيد، مثالي للألعاب، البث المباشر، والتصوير.",
+        adblockTitle: "تم اكتشاف مانع إعلانات!",
+        adblockDesc: "يرجى إيقاف مانع الإعلانات لهذا الموقع حتى يظهر زر التحميل.",
+        recheckBtn: "أوقفته — افحص مرة أخرى",
+        timerPrefix: "يرجى الانتظار",
+        timerSuffix: "ثانية قبل فتح زر التحميل...",
+        downloadBtn: "تحميل GR Capture v1.0 (46.4 MB)",
+        metaInfo: "نظام التشغيل: Windows 10 / 11 (64-bit) • ملف تشغيل مباشر (.exe)",
+        adTopText: "مساحة إعلانية 1 (ضع كود الإعلان هنا لاحقاً)",
+        adBottomText: "مساحة إعلانية 2 (ضع كود الإعلان الثاني هنا لاحقاً)",
+        featuresTitle: "لماذا تستخدم GR Capture؟",
+        f1Title: "⚡ استجابة فورية بدون تأخير",
+        f1Desc: "مصمم لتقديم أقل زمن استجابة ممكن لتجربة لعب وتحكم سلسة عبر كابل USB أو الشبكة.",
+        f2Title: "🔊 دعم نقل الصوت",
+        f2Desc: "انقل صوت الهاتف مباشرة إلى سماعات الكمبيوتر أو برامج البث والتسجيل بكل سهولة.",
+        f3Title: "🪶 خفيف ولا يحتاج تثبيت",
+        f3Desc: "ملف تشغيل واحد جاهز للعمل فوراً دون استهلاك موارد المعالج أو كرت الشاشة.",
+        guideTitle: "طريقة التشغيل في 3 خطوات",
+        step1: "<strong>تفعيل تصحيح أخطاء USB:</strong> من إعدادات هاتفك ادخل إلى <em>خيارات المطور</em> وفعّل <em>USB Debugging</em>.",
+        step2: "<strong>توصيل الهاتف:</strong> وصّل الهاتف بالكمبيوتر عبر كابل USB ووافق على رسالة السماح على شاشة الهاتف.",
+        step3: "<strong>تشغيل البرنامج:</strong> افتح ملف <code>GR.Capture.exe</code> وستظهر شاشة هاتفك فوراً على الكمبيوتر.",
+        privacyTitle: "سياسة الخصوصية وشروط الاستخدام",
+        privacyText: "<strong>سياسة الخصوصية:</strong> يحترم موقع GR Capture خصوصية الزوار ولا يجمع أي بيانات شخصية حساسة. قد تُستخدم ملفات تعريف الارتباط وشبكات الإعلانات لعرض إعلانات ملائمة.",
+        termsText: "<strong>إخلاء المسؤولية:</strong> البرنامج متاح للاستخدام الشخصي والتعليمي. جميع الحقوق محفوظة لمطور GR Capture.",
+        footerCopy: "© 2026 GR Capture — جميع الحقوق محفوظة",
+        contactUs: "تواصل معنا"
+      }
+    };
+
+    let currentLang = "en";
+    let timeLeft = 30;
+    let countdownInterval = null;
+    let timerFinished = false;
+
+    const adblockBox = document.getElementById("adblockBox");
+    const timerBox = document.getElementById("timerBox");
+    const countdownEl = document.getElementById("countdown");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const recheckBtn = document.getElementById("recheckBtn");
+    const langToggle = document.getElementById("langToggle");
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      const dict = translations[lang];
+      document.documentElement.lang = dict.lang;
+      document.documentElement.dir = dict.dir;
+      document.title = dict.pageTitle;
+      langToggle.textContent = dict.switchBtn;
+
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key] !== undefined) {
+          el.innerHTML = dict[key];
+        }
+      });
+    }
+
+    langToggle.addEventListener("click", () => {
+      applyLanguage(currentLang === "en" ? "ar" : "en");
+    });
+
+    function isAdBlockerActive() {
+      const bait = document.querySelector(".adsbygoogle-bait");
+      const baitHidden = !bait || bait.offsetParent === null || bait.offsetHeight === 0;
+      const scriptBlocked = Boolean(window.__adsJsBlocked) || !Boolean(window.__adsJsLoaded);
+      return baitHidden || scriptBlocked;
+    }
+
+    function startCountdownIfNeeded() {
+      if (timerFinished) {
+        adblockBox.classList.add("hidden");
+        timerBox.classList.add("hidden");
+        downloadBtn.classList.remove("hidden");
+        return;
+      }
+
+      adblockBox.classList.add("hidden");
+      downloadBtn.classList.add("hidden");
+      timerBox.classList.remove("hidden");
+      countdownEl.textContent = timeLeft;
+
+      if (countdownInterval) clearInterval(countdownInterval);
+      countdownInterval = setInterval(() => {
+        if (isAdBlockerActive()) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+          evaluateAccess();
+          return;
+        }
+
+        timeLeft -= 1;
+        countdownEl.textContent = Math.max(timeLeft, 0);
+
+        if (timeLeft <= 0) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+          timerFinished = true;
+          timerBox.classList.add("hidden");
+          downloadBtn.classList.remove("hidden");
+        }
+      }, 1000);
+    }
+
+    function evaluateAccess() {
+      if (isAdBlockerActive()) {
+        if (countdownInterval) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+        }
+        timerBox.classList.add("hidden");
+        downloadBtn.classList.add("hidden");
+        adblockBox.classList.remove("hidden");
+      } else {
+        startCountdownIfNeeded();
+      }
+    }
+
+    recheckBtn.addEventListener("click", () => {
+      location.reload();
+    });
+
+    applyLanguage("en");
+    window.addEventListener("load", () => {
+      setTimeout(evaluateAccess, 250);
+    });
+  </script>
 </body>
 </html>
