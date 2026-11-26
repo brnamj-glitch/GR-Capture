@@ -14,10 +14,8 @@
       --muted: #9ca3af;
       --accent: #22c55e;
       --accent-hover: #16a34a;
-      --warn: #f59e0b;
       --warn-bg: rgba(245, 158, 11, 0.12);
       --danger: #ef4444;
-      --danger-bg: rgba(239, 68, 68, 0.12);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif; }
     body { background: var(--bg); color: var(--text); line-height: 1.7; }
@@ -31,19 +29,17 @@
     .header-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
     nav a { color: var(--muted); text-decoration: none; font-size: 0.95rem; margin: 0 8px; }
     nav a:hover { color: var(--text); }
-
     .lang-btn {
       background: var(--card); color: var(--text); border: 1px solid var(--border);
-      padding: 6px 14px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.88rem;
-      transition: 0.2s;
+      padding: 6px 14px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.88rem; transition: 0.2s;
     }
     .lang-btn:hover { border-color: var(--accent); color: var(--accent); }
 
     .hero { text-align: center; padding: 48px 16px 32px; }
     .badge {
-      display: inline-block; background: rgba(34, 197, 94, 0.12); color: var(--accent);
+      display: inline-block; background: rgba(34,197,94,0.12); color: var(--accent);
       padding: 4px 14px; border-radius: 999px; font-size: 0.85rem; margin-bottom: 14px;
-      border: 1px solid rgba(34, 197, 94, 0.3);
+      border: 1px solid rgba(34,197,94,0.3);
     }
     h1 { font-size: 2.2rem; margin-bottom: 14px; line-height: 1.3; }
     .hero p { color: var(--muted); max-width: 660px; margin: 0 auto 26px; font-size: 1.04rem; }
@@ -52,58 +48,35 @@
       min-height: 120px; display: flex; flex-direction: column;
       align-items: center; justify-content: center; gap: 10px;
     }
-
     .timer-box {
       background: var(--card); border: 1px solid var(--border); color: var(--text);
       padding: 14px 26px; border-radius: 12px; font-size: 1.05rem; font-weight: 700;
     }
     .timer-num { color: var(--accent); font-size: 1.35rem; margin: 0 4px; }
-
     .paused-note {
-      background: var(--warn-bg); border: 1px solid rgba(245, 158, 11, 0.45);
+      background: var(--warn-bg); border: 1px solid rgba(245,158,11,0.45);
       color: #fde68a; padding: 10px 16px; border-radius: 10px; font-size: 0.9rem; font-weight: 600;
     }
-
     .btn-download {
       display: inline-block; background: var(--accent); color: #052e16; font-weight: 800;
       padding: 15px 34px; border-radius: 12px; text-decoration: none; font-size: 1.08rem;
-      transition: 0.2s; box-shadow: 0 8px 24px rgba(34, 197, 94, 0.25);
+      transition: 0.2s; box-shadow: 0 8px 24px rgba(34,197,94,0.25);
     }
     .btn-download:hover { background: var(--accent-hover); transform: translateY(-2px); }
 
-    /* =====================================================
-       ADBLOCK OVERLAY
-       - الشاشة الضبابية تغطي المحتوى خلفها
-       - الكارد يظهر في المنتصف
-    ===================================================== */
+    /* ===== ADBLOCK OVERLAY ===== */
     .adblock-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      /* ضباب وتعتيم على المحتوى الخلفي */
-      background: rgba(5, 8, 20, 0.75);
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      background: rgba(5,8,20,0.75);
       backdrop-filter: blur(10px) saturate(0.4);
       -webkit-backdrop-filter: blur(10px) saturate(0.4);
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      /* ظهور بانيميشن ناعم */
-      animation: overlayIn 0.35s ease;
-    }
-    @keyframes overlayIn {
-      from { opacity: 0; backdrop-filter: blur(0px); }
-      to   { opacity: 1; backdrop-filter: blur(10px) saturate(0.4); }
+      align-items: center; justify-content: center; padding: 20px;
     }
     .adblock-overlay.active { display: flex; }
-
     .adblock-modal {
-      background: linear-gradient(145deg, #161e30, #0f1624);
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      border-radius: 20px;
-      padding: 40px 36px 32px;
-      max-width: 500px;
-      width: 100%;
+      background: linear-gradient(145deg,#161e30,#0f1624);
+      border: 1px solid rgba(239,68,68,0.4); border-radius: 20px;
+      padding: 40px 36px 32px; max-width: 500px; width: 100%;
       text-align: center;
       box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
       animation: modalIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
@@ -112,46 +85,26 @@
       from { transform: scale(0.88) translateY(20px); opacity: 0; }
       to   { transform: scale(1) translateY(0); opacity: 1; }
     }
-
     .ab-icon-wrap {
-      width: 72px; height: 72px;
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      border-radius: 50%;
+      width: 72px; height: 72px; background: rgba(239,68,68,0.12);
+      border: 1px solid rgba(239,68,68,0.3); border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 2rem;
-      margin: 0 auto 20px;
+      font-size: 2rem; margin: 0 auto 20px;
     }
-
-    .adblock-modal h2 {
-      color: #fff; font-size: 1.45rem; margin-bottom: 10px; font-weight: 800;
-    }
-
+    .adblock-modal h2 { color: #fff; font-size: 1.45rem; margin-bottom: 10px; font-weight: 800; }
     .ab-subtitle {
       color: var(--accent); font-size: 0.88rem; font-weight: 700;
       letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 14px;
       display: flex; align-items: center; justify-content: center; gap: 6px;
     }
     .ab-subtitle::before, .ab-subtitle::after {
-      content: ""; flex: 1; height: 1px;
-      background: linear-gradient(to right, transparent, rgba(34,197,94,0.3));
+      content: ""; flex: 1; height: 1px; background: linear-gradient(to right,transparent,rgba(34,197,94,0.3));
     }
-    .ab-subtitle::after {
-      background: linear-gradient(to left, transparent, rgba(34,197,94,0.3));
-    }
-
-    .adblock-modal p.ab-desc {
-      color: #9ca3af; font-size: 0.97rem; line-height: 1.7; margin-bottom: 20px;
-    }
-
+    .ab-subtitle::after { background: linear-gradient(to left,transparent,rgba(34,197,94,0.3)); }
+    .adblock-modal p.ab-desc { color: #9ca3af; font-size: 0.97rem; line-height: 1.7; margin-bottom: 20px; }
     .ab-steps {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 12px;
-      padding: 16px 20px;
-      text-align: start;
-      margin-bottom: 24px;
-      list-style: none;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px; padding: 16px 20px; text-align: start; margin-bottom: 24px; list-style: none;
     }
     .ab-steps li {
       color: #d1d5db; font-size: 0.91rem; padding: 5px 0;
@@ -159,16 +112,12 @@
     }
     .ab-steps li + li { border-top: 1px solid rgba(255,255,255,0.05); }
     .ab-step-num {
-      min-width: 22px; height: 22px;
-      background: rgba(34,197,94,0.15);
-      border: 1px solid rgba(34,197,94,0.3);
-      border-radius: 50%;
-      color: var(--accent);
-      font-size: 0.75rem; font-weight: 800;
+      min-width: 22px; height: 22px; background: rgba(34,197,94,0.15);
+      border: 1px solid rgba(34,197,94,0.3); border-radius: 50%;
+      color: var(--accent); font-size: 0.75rem; font-weight: 800;
       display: flex; align-items: center; justify-content: center;
       margin-top: 2px; flex-shrink: 0;
     }
-
     .recheck-btn {
       background: var(--accent); color: #052e16; border: none;
       padding: 13px 28px; border-radius: 11px; cursor: pointer;
@@ -177,81 +126,65 @@
     }
     .recheck-btn:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-1px); }
     .recheck-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-    .recheck-status {
-      margin-top: 10px; font-size: 0.85rem; color: #f87171; min-height: 20px;
-      font-weight: 600;
-    }
+    .recheck-status { margin-top: 10px; font-size: 0.85rem; color: #f87171; min-height: 20px; font-weight: 600; }
 
     .meta-info { margin-top: 8px; font-size: 0.85rem; color: var(--muted); }
-
     .ad-slot {
       margin: 34px auto; padding: 18px; background: #0f1524; border: 1px dashed #2a3650;
       border-radius: 12px; text-align: center; color: var(--muted); font-size: 0.85rem;
       min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      position: relative;
     }
-    .ad-probe-box {
-      width: 320px; height: 55px; display: flex;
-      align-items: center; justify-content: center;
-      font-size: 0.82rem; color: var(--muted);
-    }
+    .ad-probe-box { width: 320px; height: 55px; display: flex; align-items: center; justify-content: center; font-size: 0.82rem; color: var(--muted); }
 
     .section { margin: 44px 0; }
     .section h2 { font-size: 1.45rem; margin-bottom: 18px; border-inline-start: 4px solid var(--accent); padding-inline-start: 12px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap: 16px; }
     .card { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 14px; }
     .card h3 { margin-bottom: 8px; font-size: 1.08rem; color: #fff; }
     .card p { color: var(--muted); font-size: 0.94rem; }
-
     .steps { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
     .steps ol { padding-inline-start: 20px; color: var(--muted); }
     .steps li { margin-bottom: 10px; }
     .steps strong { color: var(--text); }
-
     .legal-box { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; color: var(--muted); font-size: 0.92rem; }
     footer { margin-top: 52px; padding-top: 22px; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 0.9rem; }
     footer a { color: var(--accent); text-decoration: none; margin: 0 8px; }
-
     .hidden { display: none !important; }
 
-    /* spinner للزر */
     @keyframes spin { to { transform: rotate(360deg); } }
-    .spinner {
-      width: 16px; height: 16px;
-      border: 2px solid rgba(5,46,22,0.4);
-      border-top-color: #052e16;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
+    .spinner { width: 16px; height: 16px; border: 2px solid rgba(5,46,22,0.4); border-top-color: #052e16; border-radius: 50%; animation: spin 0.7s linear infinite; }
+
+    /* عنصر الكشف — مخفي خارج الشاشة */
+    #adDetectDiv {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
     }
   </style>
 </head>
 <body>
 
-  <!-- ===================================================
-       ADBLOCK OVERLAY — شاشة ضبابية + كارد تحذير
-  =================================================== -->
-  <div class="adblock-overlay" id="adblockOverlay" role="dialog" aria-modal="true" aria-labelledby="ab-title">
+  <!--
+    عنصر الكشف الوحيد الموثوق:
+    div بكلاس "adsbox" — هذا الكلاس موجود في EasyList بالاسم الحرفي.
+    Brave + uBlock + ABP كلهم يخفونه بـ CSS rule: .adsbox { display:none }
+    متصفح بدون adblock لن يفعل شيئاً → height يبقى 1px
+  -->
+  <div id="adDetectDiv" class="adsbox">&nbsp;</div>
+
+  <!-- Overlay التحذير -->
+  <div class="adblock-overlay" id="adblockOverlay" role="dialog" aria-modal="true">
     <div class="adblock-modal">
-      <div class="ab-icon-wrap">�️</div>
-      <h2 id="ab-title">Ad Blocker Detected!</h2>
+      <div class="ab-icon-wrap">🛡️</div>
+      <h2 id="ab-title">Ad Blocker Detected</h2>
       <p class="ab-subtitle" id="ab-subtitle">Support us to get better content</p>
-      <p class="ab-desc" id="ab-desc">
-        To provide you with better content and keep this site free, please disable your ad blocker for this page.
-      </p>
+      <p class="ab-desc" id="ab-desc">To provide you with better content and keep this site free, please disable your ad blocker for this page.</p>
       <ul class="ab-steps" id="ab-steps">
-        <li>
-          <span class="ab-step-num">1</span>
-          <span id="ab-s1">Click the ad blocker icon in your browser toolbar</span>
-        </li>
-        <li>
-          <span class="ab-step-num">2</span>
-          <span id="ab-s2">Select "Disable on this site" or "Pause protection"</span>
-        </li>
-        <li>
-          <span class="ab-step-num">3</span>
-          <span id="ab-s3">Then click the button below to continue</span>
-        </li>
+        <li><span class="ab-step-num">1</span><span id="ab-s1">Click the ad blocker icon in your browser toolbar</span></li>
+        <li><span class="ab-step-num">2</span><span id="ab-s2">Select "Disable on this site" or "Pause protection"</span></li>
+        <li><span class="ab-step-num">3</span><span id="ab-s3">Then click the button below to continue</span></li>
       </ul>
       <button class="recheck-btn" id="recheckBtn" type="button" onclick="recheckAdblock()">
         <span id="ab-recheckLabel">I Disabled It — Check Again</span>
@@ -260,9 +193,6 @@
     </div>
   </div>
 
-  <!-- ===================================================
-       MAIN CONTENT
-  =================================================== -->
   <div class="container">
     <header>
       <div class="logo">GR Capture</div>
@@ -282,33 +212,23 @@
       <p data-i18n="heroDesc">GR Capture is a lightweight tool to display and control your Android screen on Windows with low delay and audio support—ideal for gaming, streaming, and recording.</p>
 
       <div class="download-zone" id="downloadZone">
-        <!-- عداد 30 ثانية -->
         <div class="timer-box hidden" id="timerBox">
           <span data-i18n="timerPrefix">Please wait</span>
           <span class="timer-num" id="countdown">30</span>
           <span data-i18n="timerSuffix">seconds before download unlocks...</span>
         </div>
-
-        <!-- تنبيه إيقاف العداد عند مغادرة التبويب -->
         <div class="paused-note hidden" id="pausedBox" data-i18n="pausedText">
           ⏸ Timer paused — stay on this tab to continue the countdown.
         </div>
-
-        <!-- زر التحميل -->
-        <a
-          class="btn-download hidden"
-          id="downloadBtn"
-          href="https://github.com/brnamj-glitch/GR-Capture/releases/download/v1.0/GR.Capture.exe"
-          data-i18n="downloadBtn"
-        >
+        <a class="btn-download hidden" id="downloadBtn"
+           href="https://github.com/brnamj-glitch/GR-Capture/releases/download/v1.0/GR.Capture.exe"
+           data-i18n="downloadBtn">
           Download GR Capture v1.0 (46.4 MB)
         </a>
-
         <div class="meta-info" data-i18n="metaInfo">OS: Windows 10 / 11 (64-bit) • Direct Executable (.exe)</div>
       </div>
     </section>
 
-    <!-- مساحة إعلانية 1 -->
     <div class="ad-slot" id="ad-top">
       <div class="adsbygoogle ad-probe-box" id="google_ads_iframe_1" data-ad-slot="1001">
         <span data-i18n="adTopText">Ad Space #1 (Paste your ad banner code here later)</span>
@@ -318,18 +238,9 @@
     <section class="section" id="features">
       <h2 data-i18n="featuresTitle">Why Use GR Capture?</h2>
       <div class="grid">
-        <div class="card">
-          <h3 data-i18n="f1Title">⚡ Low-Latency Response</h3>
-          <p data-i18n="f1Desc">Designed for smooth control and gameplay over USB or network with minimal delay.</p>
-        </div>
-        <div class="card">
-          <h3 data-i18n="f2Title">🔊 Audio Forwarding</h3>
-          <p data-i18n="f2Desc">Route your phone audio directly to PC speakers, recording software, or streams.</p>
-        </div>
-        <div class="card">
-          <h3 data-i18n="f3Title">🪶 Lightweight &amp; Portable</h3>
-          <p data-i18n="f3Desc">Single ready-to-run executable file with no heavy background bloat.</p>
-        </div>
+        <div class="card"><h3 data-i18n="f1Title">⚡ Low-Latency Response</h3><p data-i18n="f1Desc">Designed for smooth control and gameplay over USB or network with minimal delay.</p></div>
+        <div class="card"><h3 data-i18n="f2Title">🔊 Audio Forwarding</h3><p data-i18n="f2Desc">Route your phone audio directly to PC speakers, recording software, or streams.</p></div>
+        <div class="card"><h3 data-i18n="f3Title">🪶 Lightweight &amp; Portable</h3><p data-i18n="f3Desc">Single ready-to-run executable file with no heavy background bloat.</p></div>
       </div>
     </section>
 
@@ -344,7 +255,6 @@
       </div>
     </section>
 
-    <!-- مساحة إعلانية 2 -->
     <div class="ad-slot" id="ad-bottom">
       <div class="ads-banner ad-probe-box" id="sponsor-banner-2">
         <span data-i18n="adBottomText">Ad Space #2 (Paste your second ad banner code here later)</span>
@@ -368,106 +278,103 @@
     </footer>
   </div>
 
-  <!-- ads.js محلي -->
-  <script src="ads.js" async></script>
-
-  <!-- طُعم خارجي: doubleclick.net محجوب في كل قوائم الحجب بما فيها Brave -->
-  <script>window.__grExtProbeBlocked = true;</script>
-  <script
-    src="https://www3.doubleclick.net/pagead/js/adsbygoogle.js"
-    onload="window.__grExtProbeBlocked = false;"
-    onerror="window.__grExtProbeBlocked = true;"
-    async
-  ></script>
-
   <script>
     /* ============================================================
        TRANSLATIONS
     ============================================================ */
     const translations = {
       en: {
-        lang: "en", dir: "ltr",
-        pageTitle: "GR Capture — Smooth Android Screen Mirroring to PC",
-        switchBtn: "العربية",
-        navFeatures: "Features", navGuide: "How to Use", navPrivacy: "Privacy",
-        badge: "Version v1.0 • Free for Windows",
-        heroTitle: "Mirror Your Phone Screen to PC With Smoothness and Clear Audio",
-        heroDesc: "GR Capture is a lightweight tool to display and control your Android screen on Windows with low delay and audio support—ideal for gaming, streaming, and recording.",
-        timerPrefix: "Please wait",
-        timerSuffix: "seconds before download unlocks...",
-        pausedText: "⏸ Timer paused — stay on this tab to continue the countdown.",
-        downloadBtn: "Download GR Capture v1.0 (46.4 MB)",
-        metaInfo: "OS: Windows 10 / 11 (64-bit) • Direct Executable (.exe)",
-        adTopText: "Ad Space #1 (Paste your ad banner code here later)",
-        adBottomText: "Ad Space #2 (Paste your second ad banner code here later)",
-        featuresTitle: "Why Use GR Capture?",
-        f1Title: "⚡ Low-Latency Response",
-        f1Desc: "Designed for smooth control and gameplay over USB or network with minimal delay.",
-        f2Title: "🔊 Audio Forwarding",
-        f2Desc: "Route your phone audio directly to PC speakers, recording software, or streams.",
-        f3Title: "🪶 Lightweight & Portable",
-        f3Desc: "Single ready-to-run executable file with no heavy background bloat.",
-        guideTitle: "How to Run in 3 Steps",
-        step1: "<strong>Enable USB Debugging:</strong> Open <em>Developer Options</em> in your phone settings and turn on <em>USB Debugging</em>.",
-        step2: "<strong>Connect Your Phone:</strong> Plug your phone into your PC via USB and approve the permission prompt on your phone.",
-        step3: "<strong>Launch the App:</strong> Run <code>GR.Capture.exe</code> and your phone screen will appear on your PC.",
-        privacyTitle: "Privacy Policy & Terms",
-        privacyText: "<strong>Privacy Policy:</strong> GR Capture respects visitor privacy and does not collect sensitive personal data. Cookies and advertising partners may be used to display relevant ads.",
-        termsText: "<strong>Disclaimer:</strong> Provided for personal and educational use. All rights reserved to the GR Capture developer.",
-        footerCopy: "© 2026 GR Capture — All rights reserved",
-        contactUs: "Contact",
-        abTitle: "Ad Blocker Detected",
-        abSubtitle: "Support us to get better content",
-        abDesc: "To provide you with better content and keep this site free, please disable your ad blocker for this page.",
-        abS1: "Click the ad blocker icon in your browser toolbar",
-        abS2: "Select \"Disable on this site\" or \"Pause protection\"",
-        abS3: "Then click the button below to continue",
-        abRecheck: "I Disabled It — Check Again",
-        abChecking: "Checking...",
-        abStillBlocked: "Ad blocker is still active. Please fully disable it for this site."
+        lang:"en", dir:"ltr",
+        pageTitle:"GR Capture — Smooth Android Screen Mirroring to PC",
+        switchBtn:"العربية",
+        navFeatures:"Features", navGuide:"How to Use", navPrivacy:"Privacy",
+        badge:"Version v1.0 • Free for Windows",
+        heroTitle:"Mirror Your Phone Screen to PC With Smoothness and Clear Audio",
+        heroDesc:"GR Capture is a lightweight tool to display and control your Android screen on Windows with low delay and audio support—ideal for gaming, streaming, and recording.",
+        timerPrefix:"Please wait", timerSuffix:"seconds before download unlocks...",
+        pausedText:"⏸ Timer paused — stay on this tab to continue the countdown.",
+        downloadBtn:"Download GR Capture v1.0 (46.4 MB)",
+        metaInfo:"OS: Windows 10 / 11 (64-bit) • Direct Executable (.exe)",
+        adTopText:"Ad Space #1 (Paste your ad banner code here later)",
+        adBottomText:"Ad Space #2 (Paste your second ad banner code here later)",
+        featuresTitle:"Why Use GR Capture?",
+        f1Title:"⚡ Low-Latency Response", f1Desc:"Designed for smooth control and gameplay over USB or network with minimal delay.",
+        f2Title:"🔊 Audio Forwarding", f2Desc:"Route your phone audio directly to PC speakers, recording software, or streams.",
+        f3Title:"🪶 Lightweight & Portable", f3Desc:"Single ready-to-run executable file with no heavy background bloat.",
+        guideTitle:"How to Run in 3 Steps",
+        step1:"<strong>Enable USB Debugging:</strong> Open <em>Developer Options</em> in your phone settings and turn on <em>USB Debugging</em>.",
+        step2:"<strong>Connect Your Phone:</strong> Plug your phone into your PC via USB and approve the permission prompt on your phone.",
+        step3:"<strong>Launch the App:</strong> Run <code>GR.Capture.exe</code> and your phone screen will appear on your PC.",
+        privacyTitle:"Privacy Policy & Terms",
+        privacyText:"<strong>Privacy Policy:</strong> GR Capture respects visitor privacy and does not collect sensitive personal data. Cookies and advertising partners may be used to display relevant ads.",
+        termsText:"<strong>Disclaimer:</strong> Provided for personal and educational use. All rights reserved to the GR Capture developer.",
+        footerCopy:"© 2026 GR Capture — All rights reserved", contactUs:"Contact",
+        abTitle:"Ad Blocker Detected",
+        abSubtitle:"Support us to get better content",
+        abDesc:"To provide you with better content and keep this site free, please disable your ad blocker for this page.",
+        abS1:"Click the ad blocker icon in your browser toolbar",
+        abS2:"Select \"Disable on this site\" or \"Pause protection\"",
+        abS3:"Then click the button below to continue",
+        abRecheck:"I Disabled It — Check Again",
+        abChecking:"Checking...",
+        abStillBlocked:"Ad blocker still active. Please disable it fully for this site."
       },
       ar: {
-        lang: "ar", dir: "rtl",
-        pageTitle: "GR Capture — عرض شاشة الهاتف على الكمبيوتر بسلاسة",
-        switchBtn: "English",
-        navFeatures: "المميزات", navGuide: "طريقة التشغيل", navPrivacy: "الخصوصية",
-        badge: "الإصدار v1.0 • مجاني بالكامل لويندوز",
-        heroTitle: "اعرض شاشة هاتفك على الكمبيوتر بأعلى سلاسة وصوت واضح",
-        heroDesc: "برنامج GR Capture أداة خفيفة ومباشرة لبث شاشة هاتف الأندرويد والتحكم بها على شاشة الكمبيوتر بدون تقطيع أو تعقيد، مثالي للألعاب، البث المباشر، والتصوير.",
-        timerPrefix: "يرجى الانتظار",
-        timerSuffix: "ثانية قبل فتح زر التحميل...",
-        pausedText: "⏸ توقف المؤقت — ابقَ في هذا التبويب ليستمر العد التنازلي.",
-        downloadBtn: "تحميل GR Capture v1.0 (46.4 MB)",
-        metaInfo: "نظام التشغيل: Windows 10 / 11 (64-bit) • ملف تشغيل مباشر (.exe)",
-        adTopText: "مساحة إعلانية 1 (ضع كود الإعلان هنا لاحقاً)",
-        adBottomText: "مساحة إعلانية 2 (ضع كود الإعلان الثاني هنا لاحقاً)",
-        featuresTitle: "لماذا تستخدم GR Capture؟",
-        f1Title: "⚡ استجابة فورية بدون تأخير",
-        f1Desc: "مصمم لتقديم أقل زمن استجابة ممكن لتجربة لعب وتحكم سلسة عبر كابل USB أو الشبكة.",
-        f2Title: "🔊 دعم نقل الصوت",
-        f2Desc: "انقل صوت الهاتف مباشرة إلى سماعات الكمبيوتر أو برامج البث والتسجيل بكل سهولة.",
-        f3Title: "🪶 خفيف ولا يحتاج تثبيت",
-        f3Desc: "ملف تشغيل واحد جاهز للعمل فوراً دون استهلاك موارد المعالج أو كرت الشاشة.",
-        guideTitle: "طريقة التشغيل في 3 خطوات",
-        step1: "<strong>تفعيل تصحيح أخطاء USB:</strong> من إعدادات هاتفك ادخل إلى <em>خيارات المطور</em> وفعّل <em>USB Debugging</em>.",
-        step2: "<strong>توصيل الهاتف:</strong> وصّل الهاتف بالكمبيوتر عبر كابل USB ووافق على رسالة السماح على شاشة الهاتف.",
-        step3: "<strong>تشغيل البرنامج:</strong> افتح ملف <code>GR.Capture.exe</code> وستظهر شاشة هاتفك فوراً على الكمبيوتر.",
-        privacyTitle: "سياسة الخصوصية وشروط الاستخدام",
-        privacyText: "<strong>سياسة الخصوصية:</strong> يحترم موقع GR Capture خصوصية الزوار ولا يجمع أي بيانات شخصية حساسة. قد تُستخدم ملفات تعريف الارتباط وشبكات الإعلانات لعرض إعلانات ملائمة.",
-        termsText: "<strong>إخلاء المسؤولية:</strong> البرنامج متاح للاستخدام الشخصي والتعليمي. جميع الحقوق محفوظة لمطور GR Capture.",
-        footerCopy: "© 2026 GR Capture — جميع الحقوق محفوظة",
-        contactUs: "تواصل معنا",
-        abTitle: "تم اكتشاف مانع إعلانات",
-        abSubtitle: "ساعدنا لنقدم لك محتوى أفضل",
-        abDesc: "لتقديم محتوى أفضل والإبقاء على هذا الموقع مجانياً، يرجى إيقاف مانع الإعلانات لهذه الصفحة.",
-        abS1: "انقر على أيقونة مانع الإعلانات في شريط المتصفح",
-        abS2: "اختر \"تعطيل لهذا الموقع\" أو \"إيقاف الحماية\"",
-        abS3: "ثم اضغط على الزر أدناه للمتابعة",
-        abRecheck: "أوقفته — افحص مرة أخرى",
-        abChecking: "جارٍ الفحص...",
-        abStillBlocked: "مانع الإعلانات لا يزال نشطاً. يرجى تعطيله كلياً لهذا الموقع."
+        lang:"ar", dir:"rtl",
+        pageTitle:"GR Capture — عرض شاشة الهاتف على الكمبيوتر بسلاسة",
+        switchBtn:"English",
+        navFeatures:"المميزات", navGuide:"طريقة التشغيل", navPrivacy:"الخصوصية",
+        badge:"الإصدار v1.0 • مجاني بالكامل لويندوز",
+        heroTitle:"اعرض شاشة هاتفك على الكمبيوتر بأعلى سلاسة وصوت واضح",
+        heroDesc:"برنامج GR Capture أداة خفيفة ومباشرة لبث شاشة هاتف الأندرويد والتحكم بها على شاشة الكمبيوتر بدون تقطيع أو تعقيد، مثالي للألعاب، البث المباشر، والتصوير.",
+        timerPrefix:"يرجى الانتظار", timerSuffix:"ثانية قبل فتح زر التحميل...",
+        pausedText:"⏸ توقف المؤقت — ابقَ في هذا التبويب ليستمر العد التنازلي.",
+        downloadBtn:"تحميل GR Capture v1.0 (46.4 MB)",
+        metaInfo:"نظام التشغيل: Windows 10 / 11 (64-bit) • ملف تشغيل مباشر (.exe)",
+        adTopText:"مساحة إعلانية 1 (ضع كود الإعلان هنا لاحقاً)",
+        adBottomText:"مساحة إعلانية 2 (ضع كود الإعلان الثاني هنا لاحقاً)",
+        featuresTitle:"لماذا تستخدم GR Capture؟",
+        f1Title:"⚡ استجابة فورية بدون تأخير", f1Desc:"مصمم لتقديم أقل زمن استجابة ممكن لتجربة لعب وتحكم سلسة عبر كابل USB أو الشبكة.",
+        f2Title:"🔊 دعم نقل الصوت", f2Desc:"انقل صوت الهاتف مباشرة إلى سماعات الكمبيوتر أو برامج البث والتسجيل بكل سهولة.",
+        f3Title:"🪶 خفيف ولا يحتاج تثبيت", f3Desc:"ملف تشغيل واحد جاهز للعمل فوراً دون استهلاك موارد المعالج أو كرت الشاشة.",
+        guideTitle:"طريقة التشغيل في 3 خطوات",
+        step1:"<strong>تفعيل تصحيح أخطاء USB:</strong> من إعدادات هاتفك ادخل إلى <em>خيارات المطور</em> وفعّل <em>USB Debugging</em>.",
+        step2:"<strong>توصيل الهاتف:</strong> وصّل الهاتف بالكمبيوتر عبر كابل USB ووافق على رسالة السماح على شاشة الهاتف.",
+        step3:"<strong>تشغيل البرنامج:</strong> افتح ملف <code>GR.Capture.exe</code> وستظهر شاشة هاتفك فوراً على الكمبيوتر.",
+        privacyTitle:"سياسة الخصوصية وشروط الاستخدام",
+        privacyText:"<strong>سياسة الخصوصية:</strong> يحترم موقع GR Capture خصوصية الزوار ولا يجمع أي بيانات شخصية حساسة. قد تُستخدم ملفات تعريف الارتباط وشبكات الإعلانات لعرض إعلانات ملائمة.",
+        termsText:"<strong>إخلاء المسؤولية:</strong> البرنامج متاح للاستخدام الشخصي والتعليمي. جميع الحقوق محفوظة لمطور GR Capture.",
+        footerCopy:"© 2026 GR Capture — جميع الحقوق محفوظة", contactUs:"تواصل معنا",
+        abTitle:"تم اكتشاف مانع إعلانات",
+        abSubtitle:"ساعدنا لنقدم لك محتوى أفضل",
+        abDesc:"لتقديم محتوى أفضل والإبقاء على هذا الموقع مجانياً، يرجى إيقاف مانع الإعلانات لهذه الصفحة.",
+        abS1:"انقر على أيقونة مانع الإعلانات في شريط المتصفح",
+        abS2:"اختر \"تعطيل لهذا الموقع\" أو \"إيقاف الحماية\"",
+        abS3:"ثم اضغط على الزر أدناه للمتابعة",
+        abRecheck:"أوقفته — افحص مرة أخرى",
+        abChecking:"جارٍ الفحص...",
+        abStillBlocked:"مانع الإعلانات لا يزال نشطاً. يرجى تعطيله كلياً لهذا الموقع."
       }
     };
+
+    /* ============================================================
+       ADBLOCK DETECTION — طريقة واحدة موثوقة
+       
+       نستخدم العنصر #adDetectDiv الذي وضعناه في HTML
+       بكلاس "adsbox" — هذا الكلاس في قائمة EasyList الرسمية:
+         .adsbox { display: none !important }
+       
+       Brave + uBlock + ABP + AdBlock كلهم يخفونه.
+       متصفح نظيف → offsetHeight = 1 (كما حددنا في CSS)
+       متصفح عنده adblock → offsetHeight = 0 (أخفاه)
+       
+       نقرأ القيمة بعد تحميل الصفحة بالكامل.
+    ============================================================ */
+    function isAdBlocked() {
+      const el = document.getElementById("adDetectDiv");
+      if (!el) return false;
+      return el.offsetHeight === 0;
+    }
 
     /* ============================================================
        STATE
@@ -475,7 +382,7 @@
     let currentLang      = "en";
     let timeLeft         = 30;
     let countdownInterval = null;
-    let watchdogInterval  = null; // فحص دوري أثناء العداد
+    let watchdogInterval  = null;
     let timerFinished    = false;
     let adblockConfirmed = false;
 
@@ -492,92 +399,6 @@
     const langToggle     = document.getElementById("langToggle");
 
     /* ============================================================
-       ADBLOCK DETECTION
-    ============================================================ */
-
-    /* ============================================================
-       ADBLOCK DETECTION — متعدد الطبقات
-       الطريقة الأساسية: CSS injection (تعمل مع Brave + uBlock + ABP)
-       الطريقة المساعدة: script tag خارجي + fetch
-    ============================================================ */
-
-    /**
-     * الطبقة 1 (الأقوى): CSS injection
-     * Brave يحجب بقواعد CSS تخفي عناصر بكلاسات إعلانية.
-     * ننشئ 3 عناصر بأسماء مختلفة ونفحصها كلها.
-     */
-    function checkCSSBlocked() {
-      const classLists = [
-        "adsbygoogle",
-        "pub_300x250 pub_300x250m",
-        "ad-banner ads banner-ads",
-        "adsbox"
-      ];
-      for (const cls of classLists) {
-        const el = document.createElement("div");
-        el.className = cls;
-        el.style.cssText = [
-          "position:fixed",
-          "top:-99999px",
-          "left:-99999px",
-          "width:300px",
-          "height:250px",
-          "pointer-events:none",
-          "opacity:1",
-          "display:block",
-          "visibility:visible"
-        ].join(";");
-        document.body.appendChild(el);
-        const h = el.offsetHeight;
-        const s = window.getComputedStyle(el);
-        const blocked = (
-          h === 0 ||
-          s.display      === "none"   ||
-          s.visibility   === "hidden" ||
-          s.opacity      === "0"      ||
-          s.maxHeight    === "0px"
-        );
-        document.body.removeChild(el);
-        if (blocked) return true;
-      }
-      return false;
-    }
-
-    /**
-     * الطبقة 2: script tag خارجي (doubleclick.net)
-     * يعمل مع uBlock وABP عبر onerror.
-     * Brave يحجبه بصمت أحياناً لكن الطبقة 1 تعوّض.
-     */
-    function checkExternalProbeBlocked() {
-      return window.__grExtProbeBlocked !== false;
-    }
-
-    /**
-     * الطبقة 3: Image probe لـ URL إعلاني
-     * بعض الأدوات تحجب الصور من دومينات الإعلانات.
-     * نستخدم Image بدل fetch لأنها أكثر موثوقية.
-     */
-    function checkImageProbeBlocked() {
-      return new Promise((resolve) => {
-        const img = new Image();
-        const tid = setTimeout(() => resolve(true), 1500); // timeout = محجوب
-        img.onload  = () => { clearTimeout(tid); resolve(false); };
-        img.onerror = () => { clearTimeout(tid); resolve(true);  };
-        // pixel tracking من doubleclick — محجوب بكل أدوات الحجب
-        img.src = "https://www3.doubleclick.net/pagead/imgfetch?id=test&t=" + Date.now();
-      });
-    }
-
-    async function isAdBlocked() {
-      // الطبقة 1 أولاً — أسرع وأكثر موثوقية مع Brave
-      if (checkCSSBlocked()) return true;
-      // الطبقة 2 — script tag
-      if (checkExternalProbeBlocked()) return true;
-      // الطبقة 3 — image probe
-      return await checkImageProbeBlocked();
-    }
-
-    /* ============================================================
        OVERLAY
     ============================================================ */
     function showAdblockOverlay() {
@@ -591,68 +412,35 @@
       adblockConfirmed = true;
     }
 
-    /* إعادة فحص عند ضغط الزر */
     async function recheckAdblock() {
       const t = translations[currentLang];
       recheckStatus.textContent = "";
       recheckBtn.disabled = true;
-      recheckBtn.innerHTML = '<div class="spinner"></div><span id="ab-recheckLabel">' + t.abChecking + '</span>';
+      recheckBtn.innerHTML = '<div class="spinner"></div><span>' + t.abChecking + '</span>';
 
-      await new Promise(r => setTimeout(r, 600));
-
-      // أعد تحميل الطُعم الخارجي
-      window.__grExtProbeBlocked = true;
-      await new Promise((resolve) => {
-        const s = document.createElement("script");
-        s.src = "https://www3.doubleclick.net/pagead/js/adsbygoogle.js?rechk=" + Date.now();
-        s.onload  = () => { window.__grExtProbeBlocked = false; resolve(); };
-        s.onerror = () => { window.__grExtProbeBlocked = true;  resolve(); };
-        document.head.appendChild(s);
-        setTimeout(resolve, 2500);
-      });
-
-      // ===== الفحص السريع =====
-      // CSS injection لا تُزال إلا بعد reload كامل للصفحة (Brave).
-      // لذلك نعتمد فقط على الطبقتين 2 و3 هنا (script tag + image probe).
-      const extBlocked   = checkExternalProbeBlocked();
-      const imgBlocked   = await checkImageProbeBlocked();
-      const stillBlocked = extBlocked && imgBlocked;
-
-      recheckBtn.disabled = false;
-      recheckBtn.innerHTML = '<span id="ab-recheckLabel">' + t.abRecheck + '</span>';
-
-      if (!stillBlocked) {
-        // ✅ تم إطفاء الـ adblock — أعد تحميل الصفحة لتنظيف قواعد CSS
-        // نحفظ في sessionStorage أن المستخدم أوقف الحجب
-        sessionStorage.setItem("gr_adblock_cleared", "1");
-        location.reload();
-      } else {
-        recheckStatus.textContent = t.abStillBlocked;
-      }
+      // بعد إطفاء الـ adblock يجب reload لأن CSS rules لا تُزال بدونه
+      // نحفظ في sessionStorage ونعيد التحميل
+      sessionStorage.setItem("gr_adblock_cleared", "1");
+      location.reload();
     }
 
     /* ============================================================
-       WATCHDOG — فحص دوري كل 5 ثواني أثناء العداد
-       لو المستخدم شغّل الـ adblock مرة ثانية → تظهر الشاشة فوراً
+       WATCHDOG — يفحص كل 5 ثواني أثناء العداد
     ============================================================ */
     function startWatchdog() {
       if (watchdogInterval) return;
-      watchdogInterval = setInterval(async () => {
+      watchdogInterval = setInterval(() => {
         if (timerFinished) { stopWatchdog(); return; }
         if (document.hidden) return;
-        const blocked = await isAdBlocked();
-        if (blocked) {
-          showAdblockOverlay(); // يوقف العداد تلقائياً داخل showAdblockOverlay
+        if (isAdBlocked()) {
+          showAdblockOverlay();
           updateOverlayTexts(translations[currentLang]);
         }
       }, 5000);
     }
 
     function stopWatchdog() {
-      if (watchdogInterval) {
-        clearInterval(watchdogInterval);
-        watchdogInterval = null;
-      }
+      if (watchdogInterval) { clearInterval(watchdogInterval); watchdogInterval = null; }
     }
 
     /* ============================================================
@@ -668,8 +456,7 @@
         timeLeft--;
         countdownEl.textContent = timeLeft;
         if (timeLeft <= 0) {
-          clearInterval(countdownInterval);
-          countdownInterval = null;
+          clearInterval(countdownInterval); countdownInterval = null;
           stopWatchdog();
           timerFinished = true;
           timerBox.classList.add("hidden");
@@ -680,21 +467,14 @@
     }
 
     function stopTimer() {
-      if (countdownInterval) {
-        clearInterval(countdownInterval);
-        countdownInterval = null;
-      }
+      if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
     }
 
-    /* إيقاف/استئناف العداد عند تبديل التبويب */
     document.addEventListener("visibilitychange", () => {
       if (timerFinished || adblockOverlay.classList.contains("active")) return;
       if (document.hidden) {
         stopTimer();
-        if (!timerFinished) {
-          timerBox.classList.remove("hidden");
-          pausedBox.classList.remove("hidden");
-        }
+        if (!timerFinished) { timerBox.classList.remove("hidden"); pausedBox.classList.remove("hidden"); }
       } else {
         pausedBox.classList.add("hidden");
         if (!timerFinished && adblockConfirmed) startTimer();
@@ -730,29 +510,24 @@
       recheckStatus.textContent = "";
     }
 
-    langToggle.addEventListener("click", () => {
-      applyLang(currentLang === "en" ? "ar" : "en");
-    });
+    langToggle.addEventListener("click", () => applyLang(currentLang === "en" ? "ar" : "en"));
 
     /* ============================================================
        INIT
     ============================================================ */
-    async function init() {
+    function init() {
       applyLang("en");
 
-      // إذا المستخدم كان قد أوقف الـ adblock وأُعيد تحميل الصفحة
-      // نفحص مرة واحدة سريعة — لو ما زال محجوباً نظهر الـ overlay
       const clearedBefore = sessionStorage.getItem("gr_adblock_cleared") === "1";
 
       if (clearedBefore) {
-        // امسح العلامة وافحص CSS فقط (بدون انتظار الطُعم الخارجي)
+        // المستخدم ضغط الزر وأُعيد التحميل — افحص الآن
         sessionStorage.removeItem("gr_adblock_cleared");
-        await new Promise(r => setTimeout(r, 300));
-        if (checkCSSBlocked()) {
-          // لا يزال محجوباً حتى بعد الـ reload
+        if (isAdBlocked()) {
+          // لا يزال محجوباً
           showAdblockOverlay();
         } else {
-          // ✅ نظيف — ابدأ العداد مباشرة
+          // ✅ نظيف بعد الـ reload
           adblockConfirmed = true;
           startTimer();
           startWatchdog();
@@ -760,10 +535,8 @@
         return;
       }
 
-      // زيارة عادية — انتظر الطُعم الخارجي ثم افحص كل الطبقات
-      await new Promise(r => setTimeout(r, 1000));
-      const blocked = await isAdBlocked();
-      if (blocked) {
+      // زيارة عادية
+      if (isAdBlocked()) {
         showAdblockOverlay();
       } else {
         adblockConfirmed = true;
@@ -772,11 +545,8 @@
       }
     }
 
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", init);
-    } else {
-      init();
-    }
+    // شغّل بعد تحميل كامل الصفحة حتى تطبّق الـ CSS rules
+    window.addEventListener("load", init);
   </script>
 </body>
 </html>
