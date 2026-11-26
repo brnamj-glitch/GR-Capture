@@ -495,51 +495,86 @@
        ADBLOCK DETECTION
     ============================================================ */
 
-    // الطبقة 1: الطُعم الخارجي (doubleclick.net) — يكشف Brave وكل adblock
+    /* ============================================================
+       ADBLOCK DETECTION — متعدد الطبقات
+       الطريقة الأساسية: CSS injection (تعمل مع Brave + uBlock + ABP)
+       الطريقة المساعدة: script tag خارجي + fetch
+    ============================================================ */
+
+    /**
+     * الطبقة 1 (الأقوى): CSS injection
+     * Brave يحجب بقواعد CSS تخفي عناصر بكلاسات إعلانية.
+     * ننشئ 3 عناصر بأسماء مختلفة ونفحصها كلها.
+     */
+    function checkCSSBlocked() {
+      const classLists = [
+        "adsbygoogle",
+        "pub_300x250 pub_300x250m",
+        "ad-banner ads banner-ads",
+        "adsbox"
+      ];
+      for (const cls of classLists) {
+        const el = document.createElement("div");
+        el.className = cls;
+        el.style.cssText = [
+          "position:fixed",
+          "top:-99999px",
+          "left:-99999px",
+          "width:300px",
+          "height:250px",
+          "pointer-events:none",
+          "opacity:1",
+          "display:block",
+          "visibility:visible"
+        ].join(";");
+        document.body.appendChild(el);
+        const h = el.offsetHeight;
+        const s = window.getComputedStyle(el);
+        const blocked = (
+          h === 0 ||
+          s.display      === "none"   ||
+          s.visibility   === "hidden" ||
+          s.opacity      === "0"      ||
+          s.maxHeight    === "0px"
+        );
+        document.body.removeChild(el);
+        if (blocked) return true;
+      }
+      return false;
+    }
+
+    /**
+     * الطبقة 2: script tag خارجي (doubleclick.net)
+     * يعمل مع uBlock وABP عبر onerror.
+     * Brave يحجبه بصمت أحياناً لكن الطبقة 1 تعوّض.
+     */
     function checkExternalProbeBlocked() {
       return window.__grExtProbeBlocked !== false;
     }
 
-    // الطبقة 2: فحص CSS — div بكلاسات إعلانية
-    function checkCSSBlocked() {
-      const probe = document.createElement("div");
-      probe.className = "adsbygoogle pub_300x250 pub_300x250m pub_728x90 textAds";
-      probe.style.cssText = "position:fixed;top:-9999px;left:-9999px;width:300px;height:250px;pointer-events:none;";
-      probe.setAttribute("data-ad-slot", "9999");
-      document.body.appendChild(probe);
-      const rect   = probe.getBoundingClientRect();
-      const styles = window.getComputedStyle(probe);
-      const blocked = (
-        rect.height === 0 || rect.width === 0 ||
-        styles.display === "none" ||
-        styles.visibility === "hidden" ||
-        styles.opacity === "0"
-      );
-      document.body.removeChild(probe);
-      return blocked;
-    }
-
-    // الطبقة 3: fetch لـ URL إعلاني خارجي
-    async function checkFetchBlocked() {
-      try {
-        const controller = new AbortController();
-        const tid = setTimeout(() => controller.abort(), 2000);
-        await fetch(
-          "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=test",
-          { method: "HEAD", mode: "no-cors", signal: controller.signal, cache: "no-store" }
-        );
-        clearTimeout(tid);
-        return false;
-      } catch {
-        return true;
-      }
+    /**
+     * الطبقة 3: Image probe لـ URL إعلاني
+     * بعض الأدوات تحجب الصور من دومينات الإعلانات.
+     * نستخدم Image بدل fetch لأنها أكثر موثوقية.
+     */
+    function checkImageProbeBlocked() {
+      return new Promise((resolve) => {
+        const img = new Image();
+        const tid = setTimeout(() => resolve(true), 1500); // timeout = محجوب
+        img.onload  = () => { clearTimeout(tid); resolve(false); };
+        img.onerror = () => { clearTimeout(tid); resolve(true);  };
+        // pixel tracking من doubleclick — محجوب بكل أدوات الحجب
+        img.src = "https://www3.doubleclick.net/pagead/imgfetch?id=test&t=" + Date.now();
+      });
     }
 
     async function isAdBlocked() {
-      await new Promise(r => setTimeout(r, 200));
+      // الطبقة 1 أولاً — أسرع وأكثر موثوقية مع Brave
+      if (checkCSSBlocked()) return true;
+      // الطبقة 2 — script tag
       if (checkExternalProbeBlocked()) return true;
-      if (checkCSSBlocked())           return true;
-      return await checkFetchBlocked();
+      // الطبقة 3 — image probe
+      return await checkImageProbeBlocked();
     }
 
     /* ============================================================
@@ -699,8 +734,8 @@
     ============================================================ */
     async function init() {
       applyLang("en");
-      // انتظر حتى يكتمل onload/onerror للطُعم الخارجي (max 2.5s)
-      await new Promise(r => setTimeout(r, 2500));
+      // انتظر حتى يكتمل onload/onerror للطُعم الخارجي (max 1s)
+      await new Promise(r => setTimeout(r, 1000));
       const blocked = await isAdBlocked();
       if (blocked) {
         showAdblockOverlay();
