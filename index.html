@@ -71,17 +71,61 @@
     }
     .btn-download:hover { background: var(--accent-hover); transform: translateY(-2px); }
 
+    /* ===== Adblock overlay - يغطي الصفحة كلها ===== */
+    .adblock-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(5, 8, 18, 0.97);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .adblock-overlay.active { display: flex; }
+    .adblock-modal {
+      background: #131a2a;
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      border-radius: 18px;
+      padding: 36px 32px;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    }
+    .adblock-icon { font-size: 3rem; margin-bottom: 14px; }
+    .adblock-modal h2 { color: #fff; font-size: 1.4rem; margin-bottom: 10px; }
+    .adblock-modal p { color: #9ca3af; font-size: 0.97rem; line-height: 1.65; margin-bottom: 10px; }
+    .adblock-steps {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 10px;
+      padding: 14px 18px;
+      text-align: start;
+      margin: 14px 0 20px;
+      color: #fca5a5;
+      font-size: 0.9rem;
+    }
+    .adblock-steps li { margin-bottom: 6px; list-style: none; padding-inline-start: 4px; }
+    .adblock-steps li::before { content: "✦ "; color: #ef4444; }
+    .recheck-btn {
+      background: var(--accent); color: #052e16; border: none;
+      padding: 12px 28px; border-radius: 10px; cursor: pointer;
+      font-weight: 800; font-size: 0.98rem; transition: 0.2s;
+      width: 100%;
+    }
+    .recheck-btn:hover { background: var(--accent-hover); }
+    .recheck-status {
+      margin-top: 10px; font-size: 0.85rem; color: var(--muted); min-height: 20px;
+    }
+
     .adblock-lock {
       background: var(--danger-bg); border: 1px solid rgba(239, 68, 68, 0.45);
       color: #fecaca; padding: 16px 20px; border-radius: 12px; max-width: 620px;
       text-align: center; font-size: 0.95rem;
     }
     .adblock-lock strong { color: #fff; display: block; margin-bottom: 4px; font-size: 1rem; }
-    .recheck-btn {
-      margin-top: 10px; background: var(--danger); color: #fff; border: none;
-      padding: 8px 18px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.88rem;
-    }
-    .recheck-btn:hover { opacity: 0.9; }
 
     .meta-info { margin-top: 8px; font-size: 0.85rem; color: var(--muted); }
 
@@ -92,6 +136,7 @@
       position: relative;
     }
 
+    /* عنصر وهمي لكشف حظر CSS من مانع الإعلانات */
     .ad-probe-box {
       width: 320px;
       height: 55px;
@@ -122,6 +167,25 @@
   </style>
 </head>
 <body>
+
+  <!-- ===== Overlay مانع الإعلانات (يغطي كامل الصفحة) ===== -->
+  <div class="adblock-overlay" id="adblockOverlay" role="dialog" aria-modal="true">
+    <div class="adblock-modal">
+      <div class="adblock-icon">🚫</div>
+      <h2 id="ab-title">Ad Blocker Detected!</h2>
+      <p id="ab-desc">This site relies on ads to remain free. Please disable your ad blocker to continue and unlock the download button.</p>
+      <ul class="adblock-steps" id="ab-steps">
+        <li id="ab-s1">Click the ad blocker icon in your browser toolbar</li>
+        <li id="ab-s2">Choose "Disable on this site" or "Pause"</li>
+        <li id="ab-s3">Refresh or click the button below once done</li>
+      </ul>
+      <button class="recheck-btn" id="recheckBtn" type="button" onclick="recheckAdblock()">
+        <span id="ab-recheckLabel">I Disabled It — Check Again</span>
+      </button>
+      <p class="recheck-status" id="recheckStatus"></p>
+    </div>
+  </div>
+
   <div class="container">
     <header>
       <div class="logo">GR Capture</div>
@@ -141,14 +205,6 @@
       <p data-i18n="heroDesc">GR Capture is a lightweight tool to display and control your Android screen on Windows with low delay and audio support—ideal for gaming, streaming, and recording.</p>
 
       <div class="download-zone" id="downloadZone">
-        <!-- قفل مانع الإعلانات -->
-        <div class="adblock-lock hidden" id="adblockBox">
-          <strong data-i18n="adblockTitle">Ad Blocker Detected!</strong>
-          <span data-i18n="adblockDesc">Please disable your ad blocker for this site to unlock the download button.</span>
-          <br />
-          <button class="recheck-btn" id="recheckBtn" type="button" data-i18n="recheckBtn">I Disabled It — Check Again</button>
-        </div>
-
         <!-- عداد 30 ثانية -->
         <div class="timer-box hidden" id="timerBox">
           <span data-i18n="timerPrefix">Please wait</span>
@@ -158,7 +214,7 @@
 
         <!-- تنبيه إيقاف العداد عند مغادرة التبويب -->
         <div class="paused-note hidden" id="pausedBox" data-i18n="pausedText">
-          Timer paused because you switched tabs. Stay on this tab to continue counting down.
+          ⏸ Timer paused — stay on this tab to continue the countdown.
         </div>
 
         <!-- زر التحميل -->
@@ -175,7 +231,7 @@
       </div>
     </section>
 
-    <!-- مساحة إعلانية 1 + عناصر فحص شائعة -->
+    <!-- مساحة إعلانية 1 + عناصر فحص شائعة (تُستخدم لكشف الحظر) -->
     <div class="ad-slot" id="ad-top">
       <div class="adsbygoogle ad-probe-box" id="google_ads_iframe_1" data-ad-slot="1001">
         <span data-i18n="adTopText">Ad Space #1 (Paste your ad banner code here later)</span>
@@ -235,32 +291,28 @@
     </footer>
   </div>
 
-  <!-- سكربت محلي باسم إعلاني لكشف الحظر -->
-  <script
-    src="ads.js"
-    onload="window.__grAdsLoaded = true;"
-    onerror="window.__grAdsBlocked = true;"
-  ></script>
+  <!--
+    ads.js: ملف محلي باسم إعلاني — يضبط window.__grAdsLoaded = true عند تحميله.
+    إذا منع الـ adblock تحميله، يبقى __grAdsLoaded = false وهذا أحد مؤشرات الكشف.
+  -->
+  <script src="ads.js" async></script>
 
   <script>
+    /* ============================================================
+       TRANSLATIONS
+    ============================================================ */
     const translations = {
       en: {
-        lang: "en",
-        dir: "ltr",
+        lang: "en", dir: "ltr",
         pageTitle: "GR Capture — Smooth Android Screen Mirroring to PC",
         switchBtn: "العربية",
-        navFeatures: "Features",
-        navGuide: "How to Use",
-        navPrivacy: "Privacy",
+        navFeatures: "Features", navGuide: "How to Use", navPrivacy: "Privacy",
         badge: "Version v1.0 • Free for Windows",
         heroTitle: "Mirror Your Phone Screen to PC With Smoothness and Clear Audio",
         heroDesc: "GR Capture is a lightweight tool to display and control your Android screen on Windows with low delay and audio support—ideal for gaming, streaming, and recording.",
-        adblockTitle: "Ad Blocker Detected!",
-        adblockDesc: "Please disable your ad blocker for this site to unlock the download button.",
-        recheckBtn: "I Disabled It — Check Again",
         timerPrefix: "Please wait",
         timerSuffix: "seconds before download unlocks...",
-        pausedText: "Timer paused because you switched tabs. Stay on this tab to continue counting down.",
+        pausedText: "⏸ Timer paused — stay on this tab to continue the countdown.",
         downloadBtn: "Download GR Capture v1.0 (46.4 MB)",
         metaInfo: "OS: Windows 10 / 11 (64-bit) • Direct Executable (.exe)",
         adTopText: "Ad Space #1 (Paste your ad banner code here later)",
@@ -280,25 +332,28 @@
         privacyText: "<strong>Privacy Policy:</strong> GR Capture respects visitor privacy and does not collect sensitive personal data. Cookies and advertising partners may be used to display relevant ads.",
         termsText: "<strong>Disclaimer:</strong> Provided for personal and educational use. All rights reserved to the GR Capture developer.",
         footerCopy: "© 2026 GR Capture — All rights reserved",
-        contactUs: "Contact"
+        contactUs: "Contact",
+        // Overlay texts
+        abTitle: "Ad Blocker Detected!",
+        abDesc: "This site relies on ads to remain free. Please disable your ad blocker to continue and unlock the download button.",
+        abS1: "Click the ad blocker icon in your browser toolbar",
+        abS2: "Choose \"Disable on this site\" or \"Pause\"",
+        abS3: "Refresh or click the button below once done",
+        abRecheck: "I Disabled It — Check Again",
+        abChecking: "Checking...",
+        abStillBlocked: "Ad blocker is still active. Please fully disable it for this site."
       },
       ar: {
-        lang: "ar",
-        dir: "rtl",
+        lang: "ar", dir: "rtl",
         pageTitle: "GR Capture — عرض شاشة الهاتف على الكمبيوتر بسلاسة",
         switchBtn: "English",
-        navFeatures: "المميزات",
-        navGuide: "طريقة التشغيل",
-        navPrivacy: "الخصوصية",
+        navFeatures: "المميزات", navGuide: "طريقة التشغيل", navPrivacy: "الخصوصية",
         badge: "الإصدار v1.0 • مجاني بالكامل لويندوز",
         heroTitle: "اعرض شاشة هاتفك على الكمبيوتر بأعلى سلاسة وصوت واضح",
         heroDesc: "برنامج GR Capture أداة خفيفة ومباشرة لبث شاشة هاتف الأندرويد والتحكم بها على شاشة الكمبيوتر بدون تقطيع أو تعقيد، مثالي للألعاب، البث المباشر، والتصوير.",
-        adblockTitle: "تم اكتشاف مانع إعلانات!",
-        adblockDesc: "يرجى إيقاف مانع الإعلانات لهذا الموقع حتى يظهر زر التحميل.",
-        recheckBtn: "أوقفته — افحص مرة أخرى",
         timerPrefix: "يرجى الانتظار",
         timerSuffix: "ثانية قبل فتح زر التحميل...",
-        pausedText: "توقف المؤقت لأنك غادرت التبويب. ابقَ في هذا التبويب ليستمر العد التنازلي.",
+        pausedText: "⏸ توقف المؤقت — ابقَ في هذا التبويب ليستمر العد التنازلي.",
         downloadBtn: "تحميل GR Capture v1.0 (46.4 MB)",
         metaInfo: "نظام التشغيل: Windows 10 / 11 (64-bit) • ملف تشغيل مباشر (.exe)",
         adTopText: "مساحة إعلانية 1 (ضع كود الإعلان هنا لاحقاً)",
@@ -318,17 +373,253 @@
         privacyText: "<strong>سياسة الخصوصية:</strong> يحترم موقع GR Capture خصوصية الزوار ولا يجمع أي بيانات شخصية حساسة. قد تُستخدم ملفات تعريف الارتباط وشبكات الإعلانات لعرض إعلانات ملائمة.",
         termsText: "<strong>إخلاء المسؤولية:</strong> البرنامج متاح للاستخدام الشخصي والتعليمي. جميع الحقوق محفوظة لمطور GR Capture.",
         footerCopy: "© 2026 GR Capture — جميع الحقوق محفوظة",
-        contactUs: "تواصل معنا"
+        contactUs: "تواصل معنا",
+        // Overlay texts
+        abTitle: "تم اكتشاف مانع إعلانات!",
+        abDesc: "يعتمد هذا الموقع على الإعلانات ليبقى مجانياً. يرجى إيقاف مانع الإعلانات للمتابعة وفتح زر التحميل.",
+        abS1: "انقر على أيقونة مانع الإعلانات في شريط المتصفح",
+        abS2: "اختر \"تعطيل لهذا الموقع\" أو \"إيقاف مؤقت\"",
+        abS3: "أعد تحميل الصفحة أو اضغط الزر أدناه",
+        abRecheck: "أوقفته — افحص مرة أخرى",
+        abChecking: "جارٍ الفحص...",
+        abStillBlocked: "مانع الإعلانات لا يزال نشطاً. يرجى تعطيله كلياً لهذا الموقع."
       }
     };
 
+    /* ============================================================
+       STATE
+    ============================================================ */
     let currentLang = "en";
     let timeLeft = 30;
     let countdownInterval = null;
     let timerFinished = false;
+    let adblockConfirmed = false; // true = تم التحقق بأنه لا يوجد حجب
 
-    const adblockBox = document.getElementById("adblockBox");
-    const timerBox = document.getElementById("timerBox");
-    const pausedBox = document.getElementById("pausedBox");
-    const countdownEl = document.getElementById("countdown");
-    const downloadBtn = document.getElementById
+    /* ============================================================
+       DOM REFS
+    ============================================================ */
+    const adblockOverlay = document.getElementById("adblockOverlay");
+    const timerBox       = document.getElementById("timerBox");
+    const pausedBox      = document.getElementById("pausedBox");
+    const countdownEl    = document.getElementById("countdown");
+    const downloadBtn    = document.getElementById("downloadBtn");
+    const recheckBtn     = document.getElementById("recheckBtn");
+    const recheckStatus  = document.getElementById("recheckStatus");
+    const langToggle     = document.getElementById("langToggle");
+
+    /* ============================================================
+       ADBLOCK DETECTION  — طبقات متعددة
+    ============================================================ */
+
+    /**
+     * الطبقة 1: هل ads.js فشل في التحميل؟
+     * ads.js يضبط window.__grAdsLoaded = true عند تحميله.
+     * إذا بقي false أو undefined → محجوب.
+     */
+    function checkScriptBlocked() {
+      return !window.__grAdsLoaded;
+    }
+
+    /**
+     * الطبقة 2: فحص CSS — ينشئ div بكلاس adsbygoogle
+     * مانعو الإعلانات يخفونه (height=0 أو display:none).
+     */
+    function checkCSSBlocked() {
+      const probe = document.createElement("div");
+      probe.className = "pub_300x250 pub_300x250m pub_728x90 textAds";
+      probe.style.cssText = "position:absolute;left:-9999px;width:1px;height:1px;";
+      probe.setAttribute("data-ad-slot", "9999");
+      document.body.appendChild(probe);
+      const rect = probe.getBoundingClientRect();
+      const blocked = (rect.height === 0 || rect.width === 0 || probe.offsetParent === null);
+      document.body.removeChild(probe);
+      return blocked;
+    }
+
+    /**
+     * الطبقة 3: فحص fetch لملف باسم إعلاني
+     * بعض الـ adblockers تمنع طلبات الشبكة لأسماء مشبوهة.
+     * نجرب جلب ads.js مرة أخرى (يفشل إذا كانت URL محظورة).
+     * هذا الفحص async ونستخدمه فقط كمؤشر إضافي.
+     */
+    async function checkFetchBlocked() {
+      try {
+        const res = await fetch("ads.js?_=" + Date.now(), { cache: "no-store" });
+        return !res.ok;
+      } catch {
+        return true;
+      }
+    }
+
+    /**
+     * isAdBlocked — يجمع كل الطبقات
+     * إذا طبقة واحدة رجعت true → محجوب
+     */
+    async function isAdBlocked() {
+      if (checkScriptBlocked()) return true;
+      if (checkCSSBlocked())    return true;
+      const fetchBlocked = await checkFetchBlocked();
+      if (fetchBlocked) return true;
+      return false;
+    }
+
+    /* ============================================================
+       OVERLAY — إظهار/إخفاء
+    ============================================================ */
+    function showAdblockOverlay() {
+      adblockOverlay.classList.add("active");
+      stopTimer();
+    }
+
+    function hideAdblockOverlay() {
+      adblockOverlay.classList.remove("active");
+      adblockConfirmed = true;
+    }
+
+    /* إعادة فحص عند ضغط الزر */
+    async function recheckAdblock() {
+      const t = translations[currentLang];
+      recheckStatus.textContent = "";
+      recheckBtn.disabled = true;
+      document.getElementById("ab-recheckLabel").textContent = t.abChecking;
+
+      // ننتظر لحظة قصيرة حتى يأخذ المتصفح وقته بعد تعطيل الـ adblock
+      await new Promise(r => setTimeout(r, 900));
+
+      // أعد تحميل ads.js ديناميكياً لإعادة ضبط __grAdsLoaded
+      window.__grAdsLoaded = false;
+      await new Promise((resolve) => {
+        const s = document.createElement("script");
+        s.src = "ads.js?rechk=" + Date.now();
+        s.onload = () => resolve();
+        s.onerror = () => resolve();
+        document.head.appendChild(s);
+        setTimeout(resolve, 1500); // timeout احتياطي
+      });
+
+      const blocked = await isAdBlocked();
+      recheckBtn.disabled = false;
+      document.getElementById("ab-recheckLabel").textContent = t.abRecheck;
+
+      if (!blocked) {
+        hideAdblockOverlay();
+        startTimer(); // ابدأ العداد فوراً بعد التحقق
+      } else {
+        recheckStatus.textContent = t.abStillBlocked;
+      }
+    }
+
+    /* ============================================================
+       COUNTDOWN TIMER
+    ============================================================ */
+    function startTimer() {
+      if (timerFinished) return;
+      timerBox.classList.remove("hidden");
+      pausedBox.classList.add("hidden");
+
+      if (countdownInterval) return; // بالفعل شغّال
+      countdownInterval = setInterval(() => {
+        // لا تعمل إذا كان التبويب مخفياً
+        if (document.hidden) return;
+
+        timeLeft--;
+        countdownEl.textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+          timerFinished = true;
+          timerBox.classList.add("hidden");
+          pausedBox.classList.add("hidden");
+          downloadBtn.classList.remove("hidden");
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+    }
+
+    /* إيقاف/استئناف العداد عند مغادرة/عودة التبويب */
+    document.addEventListener("visibilitychange", () => {
+      if (timerFinished || adblockOverlay.classList.contains("active")) return;
+
+      if (document.hidden) {
+        // غادر التبويب — أوقف العداد وأظهر التنبيه
+        stopTimer();
+        if (!timerFinished) {
+          timerBox.classList.remove("hidden");
+          pausedBox.classList.remove("hidden");
+        }
+      } else {
+        // رجع للتبويب — أخفِ التنبيه واستأنف العداد
+        pausedBox.classList.add("hidden");
+        if (!timerFinished && adblockConfirmed) {
+          startTimer();
+        }
+      }
+    });
+
+    /* ============================================================
+       LANGUAGE TOGGLE
+    ============================================================ */
+    function applyLang(lang) {
+      const t = translations[lang];
+      currentLang = lang;
+
+      document.documentElement.lang = t.lang;
+      document.documentElement.dir  = t.dir;
+      document.title = t.pageTitle;
+      langToggle.textContent = t.switchBtn;
+
+      // ترجمة عناصر data-i18n
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (t[key] !== undefined) el.innerHTML = t[key];
+      });
+
+      // ترجمة الـ overlay
+      document.getElementById("ab-title").textContent   = t.abTitle;
+      document.getElementById("ab-desc").textContent    = t.abDesc;
+      document.getElementById("ab-s1").textContent      = t.abS1;
+      document.getElementById("ab-s2").textContent      = t.abS2;
+      document.getElementById("ab-s3").textContent      = t.abS3;
+      document.getElementById("ab-recheckLabel").textContent = t.abRecheck;
+      if (recheckStatus.textContent) recheckStatus.textContent = ""; // امسح رسالة الخطأ عند تبديل اللغة
+    }
+
+    langToggle.addEventListener("click", () => {
+      applyLang(currentLang === "en" ? "ar" : "en");
+    });
+
+    /* ============================================================
+       INIT — نقطة الانطلاق
+    ============================================================ */
+    async function init() {
+      applyLang("en");
+
+      // انتظر حتى يتم تحميل الصفحة بالكامل قبل فحص الـ adblock
+      // (نعطي ads.js وقتاً معقولاً ليحمّل أو يفشل)
+      await new Promise(r => setTimeout(r, 600));
+
+      const blocked = await isAdBlocked();
+      if (blocked) {
+        showAdblockOverlay();
+      } else {
+        adblockConfirmed = true;
+        startTimer();
+      }
+    }
+
+    // شغّل init بعد تحميل الصفحة
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
+    }
+  </script>
+</body>
+</html>
