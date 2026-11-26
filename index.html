@@ -596,8 +596,6 @@
       const t = translations[currentLang];
       recheckStatus.textContent = "";
       recheckBtn.disabled = true;
-      // أظهر spinner
-      document.getElementById("ab-recheckLabel").textContent = "";
       recheckBtn.innerHTML = '<div class="spinner"></div><span id="ab-recheckLabel">' + t.abChecking + '</span>';
 
       await new Promise(r => setTimeout(r, 600));
@@ -613,14 +611,21 @@
         setTimeout(resolve, 2500);
       });
 
-      const blocked = await isAdBlocked();
+      // ===== الفحص السريع =====
+      // CSS injection لا تُزال إلا بعد reload كامل للصفحة (Brave).
+      // لذلك نعتمد فقط على الطبقتين 2 و3 هنا (script tag + image probe).
+      const extBlocked   = checkExternalProbeBlocked();
+      const imgBlocked   = await checkImageProbeBlocked();
+      const stillBlocked = extBlocked && imgBlocked;
+
       recheckBtn.disabled = false;
       recheckBtn.innerHTML = '<span id="ab-recheckLabel">' + t.abRecheck + '</span>';
 
-      if (!blocked) {
-        hideAdblockOverlay();
-        startTimer();
-        startWatchdog(); // ابدأ المراقبة المستمرة
+      if (!stillBlocked) {
+        // ✅ تم إطفاء الـ adblock — أعد تحميل الصفحة لتنظيف قواعد CSS
+        // نحفظ في sessionStorage أن المستخدم أوقف الحجب
+        sessionStorage.setItem("gr_adblock_cleared", "1");
+        location.reload();
       } else {
         recheckStatus.textContent = t.abStillBlocked;
       }
@@ -734,7 +739,28 @@
     ============================================================ */
     async function init() {
       applyLang("en");
-      // انتظر حتى يكتمل onload/onerror للطُعم الخارجي (max 1s)
+
+      // إذا المستخدم كان قد أوقف الـ adblock وأُعيد تحميل الصفحة
+      // نفحص مرة واحدة سريعة — لو ما زال محجوباً نظهر الـ overlay
+      const clearedBefore = sessionStorage.getItem("gr_adblock_cleared") === "1";
+
+      if (clearedBefore) {
+        // امسح العلامة وافحص CSS فقط (بدون انتظار الطُعم الخارجي)
+        sessionStorage.removeItem("gr_adblock_cleared");
+        await new Promise(r => setTimeout(r, 300));
+        if (checkCSSBlocked()) {
+          // لا يزال محجوباً حتى بعد الـ reload
+          showAdblockOverlay();
+        } else {
+          // ✅ نظيف — ابدأ العداد مباشرة
+          adblockConfirmed = true;
+          startTimer();
+          startWatchdog();
+        }
+        return;
+      }
+
+      // زيارة عادية — انتظر الطُعم الخارجي ثم افحص كل الطبقات
       await new Promise(r => setTimeout(r, 1000));
       const blocked = await isAdBlocked();
       if (blocked) {
